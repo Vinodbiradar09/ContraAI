@@ -19,6 +19,7 @@ export const verifyCodeValidation = z.object({
 
 })
 
+
 export const signInValidation = z.object({
     email : z.string().email({message : "Invalid email address"}),
     password : z.string(),
