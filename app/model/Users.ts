@@ -10,6 +10,12 @@ export interface UserInt extends Document{
     verifyCodeExpiry : Date,
     isVerified : boolean
 }
+export interface UserPublic {
+  _id: mongoose.Types.ObjectId;
+  username: string;
+  email: string;
+  isVerified: boolean;
+}
 
 const userSchema = new Schema<UserInt>(
     {

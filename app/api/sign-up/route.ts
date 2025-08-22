@@ -4,8 +4,9 @@ import { connectDB } from "@/app/lib/db";
 import { sendVerificationEmail } from "@/app/helpers/sendVerification";
 import { usernameValidation , signUpValidation } from "@/app/schemas/User.Schema";
 import { UserT } from "@/app/types/Sign-up.type";
+import { sanitizeUser } from "@/app/helpers/sanitizedUser";
 
-export async function POST(request : NextRequest) {
+export async function POST(request : NextRequest) : Promise<NextResponse> {
     let user;
     try {
         await connectDB();
@@ -96,12 +97,16 @@ export async function POST(request : NextRequest) {
                 }, {status : 400},
             )
         }
-        const safeUser = {
-            id: user?._id,
-            username: user?.username,
-            email: user?.email,
-            isVerified: user?.isVerified,
-        };
+        if(!user){
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "User creation or retrieval failed",
+                },
+                { status: 500 }
+            );
+        }
+        const safeUser = sanitizeUser(user);
         return NextResponse.json(
             {
                 message : "User registered successfully , Please verify your account",

@@ -2,11 +2,13 @@ import { NextRequest , NextResponse } from "next/server";
 import { verifyCodeValidation } from "@/app/schemas/User.Schema";
 import User from "@/app/model/Users";
 import { connectDB } from "@/app/lib/db";
+import { VerifyT } from "@/app/types/verify.type";
 
-export async function POST(request : NextRequest) {
+export async function POST(request : NextRequest) : Promise<NextResponse> {
     try {
         await connectDB();
-        const {username , verifyCode} = await request.json();
+        const body : VerifyT = await request.json();
+        const {username , verifyCode} = body;
         const decodedUsername = decodeURIComponent(username);
         const codeResult = verifyCodeValidation.safeParse({verifyCode});
         if(!codeResult.success){
