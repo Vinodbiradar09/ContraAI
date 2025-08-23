@@ -157,19 +157,19 @@ export async function perplexityApiCall(originalContent : string) : Promise<stri
         })
 
         if(!response.ok){
-            console.log("failed to get the response from the api");
+            console.log("failed to get the response from the api for humanization mode");
             const errorData = await response.json().catch(()=> ({}));
             throw new Error(`Perplexity API error: ${response.status} - ${errorData.error?.message || response.statusText}`);
         }
 
         const data : PerplexityResponse = await response.json();
         if(!data.choices || data.choices.length === 0){
-            throw new Error('No response from Perplexity API');
+            throw new Error('No response from Perplexity API For Humanization Mode');
         }
 
         return data.choices[0].message.content.trim();
     } catch (error) {
-        console.error('Error calling Perplexity API:', error);
+        console.error('Error calling Perplexity API For Humanization Mode:', error);
         throw new Error(`Failed to humanize content: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
 }

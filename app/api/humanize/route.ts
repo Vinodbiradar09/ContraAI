@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
               : "Content must be provided and have at least 10 characters",
           success: false,
         },
-        { status: 422 }
+        { status: 402 }
       );
     }
 
