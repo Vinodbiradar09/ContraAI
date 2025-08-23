@@ -25,7 +25,6 @@ export async function POST(request : NextRequest) : Promise<NextResponse> {
 
         const signInResult = signUpValidation.safeParse({username , email , password});
         if(!signInResult.success){
-            console.log("signIn" , signInResult.success);
            const formattedErrors = signInResult.error.format();
               const signInErrors = [
                 ...(formattedErrors.username?._errors || []),
