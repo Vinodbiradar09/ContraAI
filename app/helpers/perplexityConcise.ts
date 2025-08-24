@@ -154,7 +154,7 @@ Execute with systematic precision and methodological excellence. Every word must
 export async function perplexityApiCallConcise(originalContent : string) : Promise<string>{
     const apiKey = process.env.PERPLEXITY_API_KEY;
     if(!apiKey){
-        throw new Error("Api key is missing");
+        throw new Error("Api key is missing in concise mode");
     }
     const playload = {
         model : "sonar-pro",
@@ -185,18 +185,18 @@ export async function perplexityApiCallConcise(originalContent : string) : Promi
         })
 
         if(!response.ok){
-            console.log("failed to get the response from the api for humanization mode");
+            console.log("failed to get the response from the api for Concised mode");
             const errorData = await response.json().catch(()=> ({}));
             throw new Error(`Perplexity API error: ${response.status} - ${errorData.error?.message || response.statusText}`);
         }
         const data : PerplexityResponse = await response.json();
         if(!data.choices || data.choices.length === 0 ){
-            throw new Error('No response from Perplexity API For Humanization Mode');
+            throw new Error('No response from Perplexity API For Concised Mode');
         }
         return data.choices[0].message.content.trim();
     } catch (error) {
-        console.error('Error calling Perplexity API For Humanization Mode:', error);
-        throw new Error(`Failed to humanize content: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.error('Error calling Perplexity API For Concised Mode:', error);
+        throw new Error(`Failed to Concised content: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
 }
 

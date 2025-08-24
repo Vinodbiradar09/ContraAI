@@ -161,7 +161,7 @@ export async function perplexityApiCallRefine(originalContent : string) : Promis
            },
            {
                 role : "user" as const,
-                content : `Transform the following content using these guidelines:\n\n${originalContent}`
+                content : `Transform the following content using refinement guidelines:\n\n${originalContent}`
            }
         ],
         temperature: 0.4,

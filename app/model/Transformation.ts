@@ -3,7 +3,7 @@ import mongoose , {Schema , model , models , Document, Model} from "mongoose";
 export interface ContentInt extends Document {
     _id : mongoose.Types.ObjectId,
     userId : mongoose.Types.ObjectId,
-    mode : "humanize" | "refine" | "concise",
+    mode : "humanize" | "refine" | "concise" | "academics",
     originalContent : string,
     transformedContent : string,
     originalWordCount: number;
@@ -20,7 +20,7 @@ const transformationSchema = new Schema<ContentInt>(
         },
         mode : {
             type : String,
-            enum : ["humanize" , "refine" , "concise"],
+            enum : ["humanize" , "refine" , "concise" , "academics"],
             required : [true , "For content transformation mode is required"],
             index : true,
         },
@@ -32,7 +32,7 @@ const transformationSchema = new Schema<ContentInt>(
         transformedContent : {
             type : String,
             required : [true , "Transformed content is required"],
-            maxLength : [5000 , "Transformed content cannot exceed more than 5000"]
+            maxLength : [50000 , "Transformed content cannot exceed more than 5000"]
         },
         originalWordCount : {
             type : Number,
