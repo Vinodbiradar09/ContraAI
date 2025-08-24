@@ -40,6 +40,7 @@ export async function GET(request : NextRequest) {
         }
 
        const transformRefineHistory = transformedContentHistory.map( trans => ({
+            _idTransformedRefinedContent : trans._id,
             transformedRefinedContent : trans.transformedContent,
             transformedRefinedWordCount : trans.transformedWordCount
        }))

@@ -8,14 +8,14 @@ export async function GET(request : NextRequest) {
     try {
         await connectDB();
         const user = await currentUser();
-        // if(!user){
-        //     return NextResponse.json(
-        //         {
-        //             message : "Unauthorized access please login",
-        //             success : false,
-        //         }, {status : 401}
-        //     )
-        // }
+        if(!user){
+            return NextResponse.json(
+                {
+                    message : "Unauthorized access please login",
+                    success : false,
+                }, {status : 401}
+            )
+        }
         const  {searchParams}  = new URL(request.url);
         const mode = searchParams.get('mode');
         if(!mode || mode !== "humanize"){
@@ -28,7 +28,7 @@ export async function GET(request : NextRequest) {
         }
 
         const transformedContentHistory = await Transformed.find({
-            // userId : user?.id,
+            userId : user?.id,
             mode : mode,
         })
         if(!transformedContentHistory || transformedContentHistory.length === 0){
@@ -40,6 +40,7 @@ export async function GET(request : NextRequest) {
             )
         }
         const transformHumanizeHistory = transformedContentHistory.map(trans => ({
+            _idTransformedHumanizedContent : trans._id,
             transformedHumanizedContent : trans.transformedContent,
             transformedHumanizedWordCount : trans.transformedWordCount,
         }))
