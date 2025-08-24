@@ -3,7 +3,7 @@ import mongoose , {Schema , model , models , Document, Model} from "mongoose";
 export interface ContentInt extends Document {
     _id : mongoose.Types.ObjectId,
     userId : mongoose.Types.ObjectId,
-    mode : "humanize" | "refine",
+    mode : "humanize" | "refine" | "concise",
     originalContent : string,
     transformedContent : string,
     originalWordCount: number;
@@ -15,12 +15,12 @@ const transformationSchema = new Schema<ContentInt>(
         userId : {
             type : mongoose.Schema.Types.ObjectId,
             ref : "User",
-            required : [true , "userId for transformationSchema is required"],
+            // required : [true , "userId for transformationSchema is required"],
             index : true,
         },
         mode : {
             type : String,
-            enum : ["humanize" , "refine"],
+            enum : ["humanize" , "refine" , "concise"],
             required : [true , "For content transformation mode is required"],
             index : true,
         },

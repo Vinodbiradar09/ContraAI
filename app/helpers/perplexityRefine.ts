@@ -156,16 +156,16 @@ export async function perplexityApiCallRefine(originalContent : string) : Promis
         model: 'sonar-pro',
         messages : [
            {
-                role : "system",
+                role : "system" as const,
                 content : systemPrompt,
            },
            {
-                role : "user",
+                role : "user" as const,
                 content : `Transform the following content using these guidelines:\n\n${originalContent}`
            }
         ],
-        temperature: 0.7,
-        max_tokens: 4000,
+        temperature: 0.4,
+        max_tokens: 6000,
         top_p: 0.9,
         stream: false
     }

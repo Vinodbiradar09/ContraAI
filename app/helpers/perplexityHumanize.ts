@@ -119,7 +119,7 @@ Final Quality Check - Before delivering, ensure the content:
 - Includes subtle human imperfections and personality touches
 - Achieves a perfect 5/5 humanization rating while preserving 100% content integrity
 
-Transform this content following these guidelines:`;
+Transform this content following these guidelines`;
 
 
 export async function perplexityApiCall(originalContent : string) : Promise<string> {
@@ -140,8 +140,8 @@ export async function perplexityApiCall(originalContent : string) : Promise<stri
                 content : `Transform the following content using these guidelines:\n\n${originalContent}`
             }
         ],
-        temperature: 0.7,
-        max_tokens: 4000,
+        temperature: 0.3,
+        max_tokens: 5000,
         top_p: 0.9,
         stream: false
     };
