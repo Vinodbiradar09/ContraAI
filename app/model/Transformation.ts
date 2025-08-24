@@ -15,7 +15,7 @@ const transformationSchema = new Schema<ContentInt>(
         userId : {
             type : mongoose.Schema.Types.ObjectId,
             ref : "User",
-            // required : [true , "userId for transformationSchema is required"],
+            required : [true , "userId for transformationSchema is required"],
             index : true,
         },
         mode : {
