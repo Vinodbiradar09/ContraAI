@@ -7,7 +7,7 @@ export async function DELETE(request : NextRequest , {params} : {params : Promis
     try {
         await connectDB();
         const {slug} = await params;
-        if(!slug || slug !== "refine"){
+        if(!slug){
             return NextResponse.json(
                 {
                     message : "Slug is required to delete the refined content history , and it must be refine mode only",

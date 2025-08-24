@@ -3,12 +3,12 @@ import Transformed from "@/app/model/Transformation";
 import { currentUser } from "@/app/helpers/currentUser";
 import { NextRequest , NextResponse } from "next/server";
 
-export async function DELETE(request:NextRequest , { params } : {params : Promise<{slug : string}>} ){
+export async function DELETE(request:NextRequest , { params } : {params : Promise<{slug : string}>}){
    
     try {
         await connectDB();
         const { slug } = await params;
-        if(!slug || slug !== "humanize"){
+        if(!slug){
         return NextResponse.json(
                 {
                     message : "slug is required to delete humanized content history",

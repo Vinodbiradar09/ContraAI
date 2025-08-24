@@ -21,13 +21,13 @@ export async function POST(request : NextRequest) {
             )
         }
         const user = await currentUser();
-        // if(!user){
-        //     return NextResponse.json(
-        //         {
-        //             message : "Unauthorized User , please login",
-        //         }, {status : 401}
-        //     )
-        // }
+        if(!user){
+            return NextResponse.json(
+                {
+                    message : "Unauthorized User , please login",
+                }, {status : 401}
+            )
+        }
         const originalWordCount = countWords(originalContent);
 
         const validation = contentValidation.safeParse({originalContent , originalWordCount});
@@ -60,18 +60,18 @@ export async function POST(request : NextRequest) {
 
         const transformedConciseWordCount = countWords(transformedConciseContent);
 
-        // const loggedUser = await UserM.findById(user.id);
-        // if(!loggedUser){
-        //     return NextResponse.json(
-        //         {
-        //             message : "Logged User not found",
-        //             success : false,
-        //         }, {status : 404}
-        //     )
-        // }
+        const loggedUser = await UserM.findById(user.id);
+        if(!loggedUser){
+            return NextResponse.json(
+                {
+                    message : "Logged User not found",
+                    success : false,
+                }, {status : 404}
+            )
+        }
 
         const transformedConciseDoc = await Transformed.create({
-            // userId : loggedUser._id,
+            userId : loggedUser._id,
             mode : "concise",
             originalContent : sanitizedOriginalConciseContent,
             transformedContent : transformedConciseContent,
