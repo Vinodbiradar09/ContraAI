@@ -18,7 +18,6 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between bg-[#111] p-4 border-b border-gray-900">
-      {/* Left: Home and App Name */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.push("/dashboard")}
@@ -32,7 +31,6 @@ export default function Navbar() {
         </h1>
       </div>
 
-      {/* Right: History Dropdown + Logout */}
       <div className="flex items-center gap-4">
         <Menu as="div" className="relative inline-block text-left">
           <Menu.Button className="inline-flex justify-center items-center rounded-md bg-[#222] px-3 py-2 text-sm font-medium text-white hover:bg-[#333] focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -52,10 +50,10 @@ export default function Navbar() {
             <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-[#111] border border-gray-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
               <div className="py-1">
                 {[
-                  { name: "Humanized History", route: "/history/humanize" },
-                  { name: "Refined History", route: "/history/refine" },
-                  { name: "Concise History", route: "/history/concise" },
-                  { name: "Academics History", route: "/history/academics" },
+                  { name: "Humanized History", route: "/humanizedhistory" },
+                  { name: "Refined History", route: "/refinedhistory" },
+                  { name: "Concise History", route: "/conciseHistory" },
+                  { name: "Academics History", route: "/academicshistory" },
                 ].map(({ name, route }) => (
                   <Menu.Item key={name}>
                     {({ active }) => (
