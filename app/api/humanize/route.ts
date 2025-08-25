@@ -86,7 +86,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      transformedContent,
+      content : transformedContent,
+      wordCount : transformedContentWordCount,
       message: "Content humanized successfully",
     });
   } catch (error) {

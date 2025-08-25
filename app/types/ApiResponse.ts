@@ -5,6 +5,7 @@ export interface ApiRes {
     success : boolean,
     message : string,
     user? : UserInt,
-    content? : ContentInt
+    content? : string,
+    wordCount? : number,
 }
 
