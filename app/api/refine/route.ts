@@ -82,7 +82,8 @@ export async function POST(request : NextRequest) {
 
         return NextResponse.json({
         success: true,
-        transformedRefineContent,
+        content : transformedRefineContent,
+        wordCount : transformedRefineWordCount,
         message: "Content Refined successfully",
     });
     } catch (error) {

@@ -90,7 +90,8 @@ export async function POST(request : NextRequest) {
 
         return NextResponse.json(
             {
-                transformedConciseContent,
+                content : transformedConciseContent,
+                wordCount : transformedConciseWordCount,
                 message : "Successfully Concise Content has been created",
                 success : true,
             }, {status : 200}

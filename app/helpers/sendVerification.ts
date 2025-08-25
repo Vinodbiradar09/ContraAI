@@ -8,7 +8,7 @@ export const sendVerificationEmail = async (email : string , username : string ,
         const {data , error} = await resend.emails.send({
          from: 'Acme <onboarding@resend.dev>',
          to : email,
-         subject : "Humanize-AI | Verification code",
+         subject : "CONTRA-AI | VERIFICATION-CODE",
          react : VerificationEmail({username , otp})
         });
 

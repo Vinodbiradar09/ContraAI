@@ -69,6 +69,9 @@ export default function ModeEditor({
     content: "",
     editable: true,
     immediatelyRender: false,
+    onUpdate: ({ editor }) => {
+      setOutputWordCount(countWords(editor.getText()));
+    },
     editorProps: {
       attributes: {
         style: `

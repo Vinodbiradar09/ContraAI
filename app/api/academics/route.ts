@@ -84,7 +84,8 @@ export async function POST(request : NextRequest) {
 
          return NextResponse.json({
             success: true,
-            transformedContent,
+            content :transformedContent,
+            wordCount : transformedContentWordCount,
             message: "Content Academized successfully",
         });
     } catch (error) {
