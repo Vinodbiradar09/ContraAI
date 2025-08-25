@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { ClipboardCopy } from "lucide-react";
 import { countWords } from "@/app/helpers/wordsCount";
 import { ApiRes } from "@/app/types/ApiResponse";
+import { toast } from "sonner";
 
 type ModeType = "humanize" | "refine" | "concise" | "academics";
 
@@ -131,6 +132,22 @@ export default function ModeEditor({
     }
   }
 
+  const handleCopyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(outputContent);
+      toast("Copied!", {
+        description: `${modeLabels[mode]} content has been copied to clipboard`,
+        action: {
+          label: "Undo",
+          onClick: () => console.log("Undo clicked")
+        }
+      });
+    } catch (error) {
+      console.error("Failed to copy to clipboard:", error);
+      toast.error("Failed to copy to clipboard");
+    }
+  };
+
   const editorBoxStyle: React.CSSProperties = {
     width: "100%",
     marginBottom: "2rem",
@@ -202,7 +219,7 @@ export default function ModeEditor({
           {outputContent && (
             <Button
               variant="outline"
-              onClick={() => navigator.clipboard.writeText(outputContent)}
+              onClick={handleCopyToClipboard}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -212,7 +229,7 @@ export default function ModeEditor({
               }}
               aria-label="Copy output content"
             >
-              <ClipboardCopy size={18} /> Copy
+              <ClipboardCopy size={18}/> Copy
             </Button>
           )}
         </div>

@@ -36,7 +36,7 @@ const VerifyAccount = () => {
                 toast("babe you have successfully verified", {
                     description : "Please login , Becoz you have verified 😁",
                     action : {
-                        label : "F*ck pop-up",
+                        label : "Undo",
                         onClick : ()=> console.log("Pop-up undo")
                         }
                     })

@@ -62,7 +62,7 @@ const SignUpForm = () => {
                toast(res.data.message,{
                 description : "Have A Good Time Babe's",
                 action : {
-                    label : "F*ck pop-up",
+                    label : "Undo",
                     onClick : ()=> console.log("undo happend")
                 }
                })

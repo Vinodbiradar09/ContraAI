@@ -45,7 +45,7 @@ const SignInForm = () => {
             toast("Babe ♥️ You Have Successfully Logged In" , {
                 description : "Now Transform Your Content Using Multiple Modes",
                 action : {
-                    label : "F*ck pop-up",
+                    label : "undo",
                     onClick : ()=> console.log("Undo successed")
                 }
             })
