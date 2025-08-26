@@ -57,7 +57,7 @@ export async function POST(request : NextRequest) : Promise<NextResponse> {
         return NextResponse.json(
             {
                 success : false,
-                message : "Invalid verification code , please try once again",
+                message : "Invalid verification code",
             } , {status : 404}
         )
     }

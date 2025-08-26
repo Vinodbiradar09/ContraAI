@@ -66,7 +66,7 @@ export default function SignUpPage() {
     try {
       const res = await axios.post<ApiRes>("/api/sign-up", data);
       if (res.data.success) {
-        toast.success(res.data.message, {
+        toast(res.data.message, {
           description: "Please verify your account by email.",
           action: {
             label: "Got it",
@@ -75,7 +75,13 @@ export default function SignUpPage() {
         });
         router.push(`/verify/${data.username}`);
       } else {
-        toast.error(res.data.message || "Registration failed.");
+        toast(res.data.message || "Registration failed." , {
+            description : "Your Registration Has Been Failed Due To Server Error",
+            action : {
+                label : "Got it",
+                onClick : ()=> console.log("Acknowledged"),
+            }
+        });
       }
     } catch (error) {
       const err = error as AxiosError<ApiRes>;

@@ -108,7 +108,7 @@ export async function POST(request : NextRequest) : Promise<NextResponse> {
         const safeUser = sanitizeUser(user);
         return NextResponse.json(
             {
-                message : "User registered successfully , Please verify your account",
+                message : "User registered successfully",
                 success : true,
                 user : safeUser,
             }, {status : 200}
