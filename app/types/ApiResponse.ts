@@ -7,6 +7,17 @@ interface TransformHumanizeHistoryItem {
   transformedHumanizedContent: string;
   transformedHumanizedWordCount: number;
 }
+interface RefineItem {
+      _idTransformedRefinedContent : string,
+      transformedRefinedContent : string,
+      transformedRefinedWordCount : number
+}
+
+interface ConciseItem {
+      _idTransformedConciseContent : string,
+      transformedConciseContent : string,
+      transformedConciseWordCount : number
+}
 
 export interface ApiRes {
   success: boolean;
@@ -15,5 +26,7 @@ export interface ApiRes {
   content?: string;
   wordCount?: number;
   transformHumanizeHistory?: TransformHumanizeHistoryItem[];
+  transformRefineHistory? : RefineItem[];
+  transformConciseHistory? : ConciseItem[];
 }
 

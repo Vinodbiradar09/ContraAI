@@ -44,7 +44,7 @@ export async function GET(request : NextRequest) {
        const transformConciseHistory = transformedContentHistory.map(trans => ({
             _idTransformedConciseContent : trans._id,
             transformedConciseContent : trans.transformedContent,
-            transformedRefinedWordCount : trans.transformedWordCount,
+            transformedConciseWordCount : trans.transformedWordCount,
        }))
 
        return NextResponse.json(
