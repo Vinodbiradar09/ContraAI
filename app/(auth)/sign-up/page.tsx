@@ -22,13 +22,7 @@ type SignUpInput = z.infer<typeof signUpSchema>;
 
 export default function SignUpPage() {
   const router = useRouter();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    watch,
-  } = useForm<SignUpInput>({
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<SignUpInput>({
     resolver: zodResolver(signUpSchema),
   });
 
@@ -39,8 +33,8 @@ export default function SignUpPage() {
 
   useEffect(() => {
     const subscription = watch((value, { name }) => {
-      if (name === "username" && value.username) {
-        setUsername(value.username);
+      if (name === "username") {
+        setUsername(value.username || "");
       }
     });
     return () => subscription.unsubscribe();
@@ -51,20 +45,19 @@ export default function SignUpPage() {
       setUsernameMessage("");
       return;
     }
-    const timer = setTimeout(async () => {
-      setIsCheckingUsername(true);
-      setUsernameMessage("");
-      try {
-        const res = await axios.get<ApiRes>(`/api/username-uniqueness?username=${username}`);
-        if (res.data.success) {
-          setUsernameMessage(res.data.message);
-        } else {
-          setUsernameMessage(res.data.message || "Username is taken");
+    const timer = setTimeout(() => {
+      (async () => {
+        setIsCheckingUsername(true);
+        setUsernameMessage("");
+        try {
+          const res = await axios.get<ApiRes>(`/api/username-uniqueness?username=${username}`);
+          if (res.data.success) setUsernameMessage(res.data.message);
+          else setUsernameMessage(res.data.message || "Username is taken");
+        } catch {
+          setUsernameMessage("Error checking username.");
         }
-      } catch {
-        setUsernameMessage("Error checking username.");
-      }
-      setIsCheckingUsername(false);
+        setIsCheckingUsername(false);
+      })();
     }, 500);
     return () => clearTimeout(timer);
   }, [username]);
@@ -91,109 +84,141 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4 py-10">
+    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
+   
       <motion.div
-        initial={{ opacity: 0, y: 40, scale: 0.97 }}
+        initial={{ clipPath: "circle(0% at 50% 50%)" }}
+        animate={{ clipPath: "circle(150% at 50% 50%)" }}
+        transition={{
+          duration: 20,
+          ease: "linear",
+          repeat: Infinity,
+          repeatType: "loop",
+        }}
+        className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_center,_#ff00cc,_#333,rgba(255,255,255,0))] animate-rainbow"
+      />
+
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="max-w-md w-full bg-[#101010] p-10 rounded-3xl border border-gray-900 shadow-[0_0_20px_2px_rgba(37,99,235,0.5)]"
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-md p-10 rounded-3xl bg-black bg-opacity-80 border border-purple-600 shadow-[0_0_20px_6px_rgba(204,21,202,0.8)] backdrop-blur-md"
       >
-        <h1 className="text-4xl font-extrabold text-white mb-10 text-center tracking-tight">
-          Create your <span className="text-blue-500">ContraAI</span> Account
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-700 mb-10 text-center">
+          Create your <span className="text-purple-400">ContraAI</span> Account
         </h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+       
           <div>
-            <label htmlFor="username" className="block mb-2 text-gray-400 font-semibold">
+            <label htmlFor="username" className="block mb-1 text-gray-300 font-semibold">
               Username
             </label>
             <input
               id="username"
               type="text"
-              autoComplete="off"
-              className={`w-full p-4 rounded-lg border ${
-                errors.username ? "border-red-600" : "border-gray-700"
-              } bg-black text-white placeholder-gray-600 focus:border-blue-600 focus:ring-2 focus:ring-blue-700 transition`}
-              placeholder="Choose your username"
               {...register("username")}
+              placeholder="Choose your username"
+              autoComplete="off"
+              className={`w-full rounded-md bg-black text-white placeholder-gray-500 p-3 border transition ${
+                errors.username ? "border-red-600" : "border-gray-700"
+              } focus:outline-none focus:ring-2 focus:ring-purple-600`}
             />
-            <div className="mt-1 min-h-[1.25rem] text-sm">
-              {isCheckingUsername ? (
-                <span className="text-blue-400">Checking availability...</span>
-              ) : usernameMessage ? (
-                usernameMessage.toLowerCase().includes("available") ? (
-                  <span className="text-green-400">{usernameMessage}</span>
-                ) : (
-                  <span className="text-red-500">{usernameMessage}</span>
-                )
-              ) : (
-                <span className="invisible">Placeholder</span>
-              )}
-            </div>
+            <p className="mt-1 text-sm text-center min-h-[1rem]">
+              {isCheckingUsername
+                ? <span className="text-purple-400 animate-pulse">Checking availability...</span>
+                : (usernameMessage ? (
+                    <span className={usernameMessage.toLowerCase().includes("available") ? "text-green-500" : "text-red-500"}>
+                      {usernameMessage}
+                    </span>
+                  ) : <span className="invisible">&nbsp;</span>)
+              }
+            </p>
             {errors.username && (
-              <p className="mt-1 text-red-600 text-sm">{errors.username.message}</p>
+              <p className="mt-1 text-xs text-red-600">{errors.username.message}</p>
             )}
           </div>
-       
+
+        
           <div>
-            <label htmlFor="email" className="block mb-2 text-gray-400 font-semibold">
+            <label htmlFor="email" className="block mb-1 text-gray-300 font-semibold">
               Email
             </label>
             <input
               id="email"
               type="email"
-              autoComplete="off"
-              className={`w-full p-4 rounded-lg border ${
-                errors.email ? "border-red-600" : "border-gray-700"
-              } bg-black text-white placeholder-gray-600 focus:border-blue-600 focus:ring-2 focus:ring-blue-700 transition`}
-              placeholder="Your email"
               {...register("email")}
+              placeholder="Your email"
+              autoComplete="off"
+              className={`w-full rounded-md bg-black text-white placeholder-gray-500 p-3 border transition ${
+                errors.email ? "border-red-600" : "border-gray-700"
+              } focus:outline-none focus:ring-2 focus:ring-purple-600`}
             />
             {errors.email && (
-              <p className="mt-1 text-red-600 text-sm">{errors.email.message}</p>
+              <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>
             )}
           </div>
-       
+
+        
           <div className="relative">
-            <label htmlFor="password" className="block mb-2 text-gray-400 font-semibold">
+            <label htmlFor="password" className="block mb-1 text-gray-300 font-semibold">
               Password
             </label>
             <input
               id="password"
               type={showPassword ? "text" : "password"}
-              autoComplete="off"
-              className={`w-full p-4 rounded-lg border ${
-                errors.password ? "border-red-600" : "border-gray-700"
-              } bg-black text-white placeholder-gray-600 focus:border-blue-600 focus:ring-2 focus:ring-blue-700 transition`}
-              placeholder="Create your password"
               {...register("password")}
+              placeholder="Create your password"
+              autoComplete="off"
+              className={`w-full rounded-md bg-black text-white placeholder-gray-500 p-3 border transition ${
+                errors.password ? "border-red-600" : "border-gray-700"
+              } focus:outline-none focus:ring-2 focus:ring-purple-600`}
             />
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-13 text-gray-500 hover:text-gray-300 transition"
               aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute top-11 right-3 text-purple-400 hover:text-purple-200 cursor-pointer transition"
+              onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
             {errors.password && (
-              <p className="mt-1 text-red-600 text-sm">{errors.password.message}</p>
+              <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>
             )}
           </div>
+
+        
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg transition disabled:opacity-50"
+            className="w-full py-3 rounded-md bg-gradient-to-r from-purple-600 via-pink-600 to-pink-500 text-white text-lg font-semibold shadow-lg hover:shadow-pink-700 transition disabled:opacity-50"
           >
             {isSubmitting ? "Creating account..." : "Create account"}
           </button>
         </form>
-        <p className="mt-8 text-center text-gray-500 text-sm">
+
+     
+        <p className="mt-10 text-center text-gray-400">
           Already have an account?{" "}
-          <Link href="/sign-in" className="text-blue-500 hover:underline">
+          <Link href="/sign-in" className="text-pink-500 hover:underline">
             Sign In
           </Link>
         </p>
+
+      <style jsx global>{`
+        @keyframes rainbow {
+          0% {
+            filter: hue-rotate(0deg);
+          }
+          100% {
+            filter: hue-rotate(360deg);
+          }
+        }
+        .bg-[radial-gradient] {
+          background: radial-gradient(circle at center, #ff00cc, #333, transparent);
+          animation: rainbow 20s linear infinite;
+        }
+      `}</style>
       </motion.div>
     </div>
   );
