@@ -19,6 +19,12 @@ interface ConciseItem {
       transformedConciseWordCount : number
 }
 
+interface AcademicsItem {
+      _idTransformedAcademicsContent : string,
+      transformedAcademicsContent : string,
+      transformedAcademicsWordCount : number
+}
+
 export interface ApiRes {
   success: boolean;
   message: string;
@@ -28,5 +34,6 @@ export interface ApiRes {
   transformHumanizeHistory?: TransformHumanizeHistoryItem[];
   transformRefineHistory? : RefineItem[];
   transformConciseHistory? : ConciseItem[];
+  transformAcademicsHistory? : AcademicsItem[];
 }
 
