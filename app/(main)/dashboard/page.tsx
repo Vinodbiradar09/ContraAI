@@ -108,7 +108,7 @@ export default function DashboardPage() {
                   e.stopPropagation();
                   handleNavigate(route);
                 }}
-                className="mt-12 py-4 px-8 self-start text-blue-400 border-b-4 border-blue-400 hover:text-blue-300 hover:border-blue-300 rounded-lg font-semibold text-2xl transition"
+                className="mt-12 py-4 px-8 self-start text-blue-400 border-b-4 border-blue-400 hover:text-blue-300 hover:border-blue-300 rounded-lg font-semibold text-2xl transition cursor-pointer"
                 aria-label={`Enter ${title}`}
               >
                 Open {title.split(" ")[0]}

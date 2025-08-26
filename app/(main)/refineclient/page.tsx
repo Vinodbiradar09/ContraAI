@@ -1,3 +1,4 @@
+"use client"
 import React , {useEffect}from "react";
 import ModeEditor from "@/components/ModeEditor";
 import { useRouter } from "next/navigation";

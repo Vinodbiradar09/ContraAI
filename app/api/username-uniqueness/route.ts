@@ -35,7 +35,7 @@ export async function GET(request : NextRequest) : Promise<NextResponse>{
                 {
                     success : false,
                     message : "Username is already taken",
-                } , {status : 404}
+                } , {status : 200}
             )
         } 
         return NextResponse.json(
