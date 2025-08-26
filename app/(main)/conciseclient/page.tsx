@@ -3,6 +3,7 @@ import React , {useEffect} from "react";
 import ModeEditor from "@/components/ModeEditor";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 
 export default function ConcisePage() {
   const router = useRouter();
@@ -15,35 +16,47 @@ export default function ConcisePage() {
       return;
     }
   }, [session , router , status])
-  
-    if (status === "loading") {
+  if (status === "loading") {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <p className="text-white">Checking Authentication...</p>
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
+        <p className="text-[#d6ccc2] text-lg font-semibold animate-pulse">Checking Authentication...</p>
       </div>
     );
   }
 
   if (!session || !session.user) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center px-4">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Authentication Required
-          </h2>
-          <p className="text-gray-400">Please login to access your dashboard</p>
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <h2 className="text-3xl font-bold text-[#d6ccc2] mb-3">Authentication Required</h2>
+          <p className="text-[#b7afa6] text-base">Please login to access your dashboard</p>
         </div>
       </div>
     );
   }
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Concise Mode AI Text</h1>
-      <ModeEditor
+     <motion.div
+      className="min-h-screen bg-black flex flex-col items-center px-6 py-6 sm:py-8"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+    >
+      <motion.h1
+        className="text-4xl sm:text-5xl font-extrabold text-[#393E46] max-w-4xl text-center mb-10 select-none"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+      >
+        Concise Mode AI Text
+      </motion.h1>
+
+      <div className="w-full max-w-7xl">
+        <ModeEditor
         mode="concise"
         apiEndpoint="/api/concise"
         inputPlaceholder="Paste content to concise..."
       />
-    </div>
+      </div>
+    </motion.div>
   );
 }
