@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-
+import { User } from "next-auth";
+import { useSession } from "next-auth/react";
 
 const dashboardModes = [
   {
@@ -44,9 +45,39 @@ const cardVariants = {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const {data : session , status} = useSession();
+  useEffect(() => {
+    if(status === "loading") return;
+    if(!session || !session.user){
+      router.replace("/sign-in");
+      return;
+    }
+  }, [router , session , status])
+  
 
   function handleNavigate(route: string) {
     router.push(route);
+  }
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <p className="text-white">Checking Authentication...</p>
+      </div>
+    );
+  }
+
+    if (!session || !session.user) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center px-4">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Authentication Required
+          </h2>
+          <p className="text-gray-400">Please login to access your dashboard</p>
+        </div>
+      </div>
+    );
   }
 
   return (
