@@ -100,22 +100,22 @@ export default function DashboardPage() {
         @keyframes pulse-border {
           0%, 100% {
             box-shadow:
-              0 0 10px 2px rgba(255, 255, 255, 0.15),
-              0 0 15px 5px rgba(255, 255, 255, 0.1);
+              0 0 10px 2px rgba(255,255,255,0.15),
+              0 0 15px 5px rgba(255,255,255,0.1);
           }
           50% {
             box-shadow:
-              0 0 15px 4px rgba(255, 255, 255, 0.4),
-              0 0 25px 10px rgba(255, 255, 255, 0.3);
+              0 0 15px 4px rgba(255,255,255,0.4),
+              0 0 25px 10px rgba(255,255,255,0.3);
           }
         }
       `}</style>
-      <main className="min-h-screen bg-black flex flex-col items-center py-12 px-6">
-        <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#7f53ac] via-[#647dee] to-[#4b6f8a] mb-14 text-center max-w-xl select-none">
+      <main className="min-h-screen bg-black flex flex-col items-center py-12 px-4 sm:px-8 md:px-12 lg:px-20">
+        <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#7f53ac] via-[#647dee] to-[#4b6f8a] mb-14 text-center max-w-xl select-none px-4">
           Choose Your AI Mode
         </h1>
 
-        <div className="grid w-full max-w-6xl grid-cols-1 sm:grid-cols-2 gap-14">
+        <div className="grid w-full max-w-7xl grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-12 sm:gap-16">
           {dashboardModes.map(({ key, title, description, route, colors }) => (
             <motion.div
               key={key}
@@ -129,21 +129,23 @@ export default function DashboardPage() {
               onKeyDown={(e) => (e.key === "Enter" ? handleNavigate(route) : undefined)}
               className={`cursor-pointer relative rounded-3xl p-10 bg-gradient-to-br from-[${colors[0]}] to-[${colors[1]}]
                 text-white flex flex-col justify-between ring-1 ring-white/10 ring-inset transition-transform
-                focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-offset-black focus:ring-opacity-60 
-                hover:brightness-110`}
+                focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-offset-black focus:ring-opacity-60 hover:brightness-110`}
               style={{
                 backgroundImage: `linear-gradient(135deg, ${colors[0]}, ${colors[1]})`,
                 borderWidth: 2,
                 borderStyle: "solid",
                 borderColor: "transparent",
                 animation: "pulse-border 4s ease-in-out infinite",
+                minHeight: "320px", // minimum height for good card balance on small screens
               }}
             >
               <div>
-                <h2 className="text-4xl font-extrabold tracking-tight drop-shadow-md mb-5 select-none">
+                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight drop-shadow-md mb-5 select-none">
                   {title}
                 </h2>
-                <p className="text-white/90 leading-relaxed max-w-lg font-light">{description}</p>
+                <p className="text-white/90 leading-relaxed max-w-lg font-light text-base sm:text-lg">
+                  {description}
+                </p>
               </div>
               <button
                 onClick={(e) => {
