@@ -133,7 +133,7 @@ export default function HomePage() {
       </motion.div>
 
     
-      <p className="absolute bottom-2 right-4 text-xs text-gray-100/20 select-none">
+      <p className="absolute bottom-2 right-4 text-xs text-gray-200/20 select-none">
         Best viewed on desktop or laptop
       </p>
     </main>
