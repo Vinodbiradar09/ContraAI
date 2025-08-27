@@ -43,7 +43,7 @@ const ConciseHistory = () => {
           message?: string;
         }>("/api/history/concisedHis?mode=concise");
         if (response.data.success && response.data.transformConciseHistory) {
-          setConcisedContentHistoryDetails(response.data.transformConciseHistory || []);
+          setConcisedContentHistoryDetails(response.data.transformConciseHistory.reverse() || []);
         } else {
           setErrorHis(response.data.message || "Internal Server Error while accessing the concise history");
         }

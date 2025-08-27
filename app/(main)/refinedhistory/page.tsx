@@ -43,7 +43,7 @@ const RefinedHistory = () => {
           message?: string;
         }>("/api/history/refinedHis?mode=refine");
         if (response.data.success && response.data.transformRefineHistory) {
-          setRefinedContentHistoryDetails(response.data.transformRefineHistory || []);
+          setRefinedContentHistoryDetails(response.data.transformRefineHistory.reverse() || []);
         } else {
           setErrorHis(response.data.message || "No refined history found");
         }

@@ -40,26 +40,47 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   onDelete,
 }) => {
   const controls = useAnimation();
-  const [isHover, setIsHover] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  const lavenderGradient =
+    "linear-gradient(135deg, #B497BD 0%, #A177B9 50%, #8463AA 100%)";
+
+  // Animate border by cycling box shadow intensity + border color alpha for a glowing lavender effect
   const handleHoverStart = () => {
-    setIsHover(true);
     controls.start({
-      scale: 1.02,
-      borderColor: "rgba(94, 129, 172, 1)", // Calm blue border on hover
-      boxShadow: "0 0 12px 3px rgba(94, 129, 172, 0.5)",
-      transition: { duration: 0.3, ease: "easeInOut" },
+      scale: 1.05,
+      borderColor: "transparent", // Hide solid border so gradient shines through
+      boxShadow: [
+        "0 0 6px 2px rgba(180, 135, 190, 0.4)", // start subtle
+        "0 0 20px 6px rgba(180, 135, 190, 0.85)", // glow peak
+        "0 0 6px 2px rgba(180, 135, 190, 0.4)", // fade back
+      ],
+      transition: {
+        duration: 2,
+        ease: "easeInOut",
+        repeat: Infinity,
+        repeatType: "loop",
+      },
+      backgroundImage: lavenderGradient,
+      backgroundOrigin: "border-box",
+      backgroundClip: "padding-box, border-box",
+      borderWidth: 2,
+      borderStyle: "solid",
+      borderImageSlice: 1,
+      borderImageSource: lavenderGradient,
     });
   };
 
   const handleHoverEnd = () => {
-    setIsHover(false);
     controls.start({
       scale: 1,
-      borderColor: "rgba(94, 129, 172, 0.35)", // Softer blue border default
-      boxShadow: "0 0 0 rgba(0,0,0,0)",
-      transition: { duration: 0.3, ease: "easeInOut" },
+      borderColor: "rgba(180, 135, 190, 0.5)", // soft lavender solid border
+      boxShadow: "0 0 4px 0 rgba(180, 135, 190, 0.25)",
+      backgroundImage: "none",
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
     });
   };
 
@@ -76,8 +97,9 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       animate={controls}
       initial={{
         scale: 1,
-        borderColor: "rgba(94, 129, 172, 0.35)", // Border default color
-        boxShadow: "0 0 0 rgba(0,0,0,0)",
+        borderColor: "rgba(180, 135, 190, 0.5)", // static lavender tone border
+        boxShadow: "0 0 4px 0 rgba(180, 135, 190, 0.25)", // gentle glow
+        backgroundImage: "none",
       }}
       onHoverStart={handleHoverStart}
       onHoverEnd={handleHoverEnd}
@@ -90,9 +112,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             {content}
           </CardTitle>
           {description && (
-            <CardDescription className="text-gray-400 truncate">
-              {description}
-            </CardDescription>
+            <CardDescription className="text-gray-400 truncate">{description}</CardDescription>
           )}
         </CardHeader>
 
@@ -108,7 +128,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
                 size="sm"
                 onClick={handleCopyClick}
                 aria-label="Copy content"
-                className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white border-0 shadow-md"
+                className="flex items-center gap-2 bg-lavender-600 hover:bg-lavender-700 text-white border-0 shadow-md"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #B497BD 0%, #A177B9 50%, #8463AA 100%)",
+                }}
               >
                 <ClipboardCopy size={16} />
                 {copied ? "Copied" : "Copy"}
@@ -121,7 +145,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
                   <Button
                     size="sm"
                     aria-label="Delete content"
-                    className="flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white border-0 shadow-md"
+                    className="flex items-center gap-2 bg-[#8D6AA4] hover:bg-[#7A5790] text-white border-0 shadow-md"
                   >
                     <Trash2 size={16} />
                     Delete

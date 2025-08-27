@@ -43,7 +43,7 @@ const AcademicsHistory = () => {
           message?: string;
         }>("/api/history/academicsHis?mode=academics");
         if (response.data.success && response.data.transformAcademicsHistory) {
-          setAcademicsContentHistoryDetails(response.data.transformAcademicsHistory || []);
+          setAcademicsContentHistoryDetails(response.data.transformAcademicsHistory.reverse() || []);
         } else {
           setErrorHis(response.data.message || "No Academics history found");
         }

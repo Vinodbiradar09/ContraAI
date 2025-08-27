@@ -69,7 +69,7 @@ const HumanizedHistory = () => {
         const response = await axios.get<ApiRes>("/api/history/humanizedHis?mode=humanize");
 
         if (response.data.success && response.data.transformHumanizeHistory) {
-          setTransformedHistory(response.data.transformHumanizeHistory);
+          setTransformedHistory(response.data.transformHumanizeHistory.reverse() || []);
         } else {
           setErrorHis(response.data.message || "No Humanized History found");
         }
