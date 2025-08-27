@@ -8,7 +8,7 @@ import { ClipboardCopy } from "lucide-react";
 import { countWords } from "@/app/helpers/wordsCount";
 import { ApiRes } from "@/app/types/ApiResponse";
 import { toast } from "sonner";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion } from "framer-motion";
 
 type ModeType = "humanize" | "refine" | "concise" | "academics";
 
@@ -34,56 +34,39 @@ export default function ModeEditor({
   const [inputWordCount, setInputWordCount] = React.useState(0);
   const [outputWordCount, setOutputWordCount] = React.useState(0);
 
-  // THEME COLOR
-  const mainColor = "#9DA2AB";
+  // Lavender theme colors
+  const lavender = "#a177b9";
 
-  // Motion animation with theme integration
-  const inputBorder = useMotionValue(mainColor);
-  const outputBorder = useMotionValue(mainColor);
-  const inputShadow = useTransform(inputBorder, (color) => `0 0 12px ${color}`);
-  const outputShadow = useTransform(outputBorder, (color) => `0 0 14px ${color}`);
+  const inputBg = "#14161b";
+  const outputBg = "#0f1116";
 
-  React.useEffect(() => {
-    animate(inputBorder, [mainColor, "#b4b7c1", mainColor], {
-      duration: 6,
-      repeat: Infinity,
-      ease: "easeInOut",
-    });
-    animate(outputBorder, [mainColor, "#c4c7cf", mainColor], {
-      duration: 7,
-      repeat: Infinity,
-      ease: "easeInOut",
-    });
-  }, [mainColor, inputBorder, outputBorder]);
-
-  const inputBg = "#14161b"; // stays dark
-  const outputBg = "#0f1116"; // darker black/gray for separation
+  // Fixed height style for consistent editor sizing
+  const editorFixedHeightStyle = `
+    min-height: 480px;
+    max-height: 480px;
+    overflow-y: auto;
+  `;
 
   const inputEditor = useEditor({
     extensions: [StarterKit],
     content: "",
     editable: true,
-    immediatelyRender: false,
+    immediatelyRender : false,
     onUpdate: ({ editor }) => setInputWordCount(countWords(editor.getText())),
     editorProps: {
       attributes: {
         spellCheck: "true",
         style: `
-          min-height: 380px;
-          max-height: 480px;
           padding: 24px;
-          border: 3px solid ${mainColor};
-          border-bottom: none;
-          border-radius: 18px 18px 0 0;
-          overflow-y: auto;
           background: ${inputBg};
           color: #e1e2e5;
           font-size: 1.1rem;
           white-space: pre-wrap;
           word-wrap: break-word;
           outline: none;
-          box-shadow: inset 0 0 12px rgba(0,0,0,0.4);
-          transition: border-color 0.3s ease;
+          box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4);
+          border-radius: 18px 0 0 18px;
+          ${editorFixedHeightStyle}
         `,
         className: "prose prose-invert max-w-full",
         placeholder: inputPlaceholder,
@@ -95,27 +78,22 @@ export default function ModeEditor({
     extensions: [StarterKit],
     content: "",
     editable: true,
-    immediatelyRender: false,
+    immediatelyRender : false,
     onUpdate: ({ editor }) => setOutputWordCount(countWords(editor.getText())),
     editorProps: {
       attributes: {
         spellCheck: "false",
         style: `
-          min-height: 380px;
-          max-height: 480px;
           padding: 24px;
-          border: 3px solid ${mainColor};
-          border-bottom: none;
-          border-radius: 18px 18px 0 0;
-          overflow-y: auto;
           background: ${outputBg};
           color: #d1d2d6;
           font-size: 1.1rem;
           white-space: pre-wrap;
           word-wrap: break-word;
           outline: none;
-          box-shadow: inset 0 0 14px rgba(0,0,0,0.5);
-          transition: border-color 0.3s ease;
+          box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.5);
+          border-radius: 0 18px 18px 0;
+          ${editorFixedHeightStyle}
         `,
         className: "prose prose-invert max-w-full",
       },
@@ -134,26 +112,26 @@ export default function ModeEditor({
     setIsLoading(true);
     setOutputContent("");
     try {
-      const content = inputEditor?.getText().trim() || "";
+      const text = inputEditor?.getText().trim() ?? "";
 
-      if (content.length < 50) {
+      if (text.length < 50) {
         setError("Please enter at least 50 characters.");
         setIsLoading(false);
         return;
       }
-      if (content.length > 3000) {
+      if (text.length > 3000) {
         setError("Maximum 3000 characters allowed.");
         setIsLoading(false);
         return;
       }
 
-      const response = await axios.post<ApiRes>(apiEndpoint, { originalContent: content });
-      if (response.data.success === false) {
+      const response = await axios.post<ApiRes>(apiEndpoint, { originalContent: text });
+      if (!response.data.success) {
         setError(response.data.message || "Failed to transform content.");
       } else {
         setOutputContent(response.data.content || "");
       }
-    } catch (error) {
+    } catch {
       setError("An unexpected error occurred.");
     } finally {
       setIsLoading(false);
@@ -163,10 +141,7 @@ export default function ModeEditor({
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(outputContent);
-      toast("Copied!", {
-        description: `${modeLabels[mode]} content has been copied to clipboard`,
-        action: { label: "Undo", onClick: () => console.log("Undo clicked") },
-      });
+      toast("Copied!", { description: `${modeLabels[mode]} content copied.` });
     } catch {
       toast.error("Failed to copy to clipboard");
     }
@@ -179,32 +154,24 @@ export default function ModeEditor({
 
   const buttonVariants = {
     rest: { scale: 1 },
-    hover: { scale: 1.08, boxShadow: `0 0 15px ${mainColor}` },
-    tap: { scale: 0.95, boxShadow: `0 0 8px ${mainColor}` },
+    hover: { scale: 1.1, boxShadow: `0 0 18px ${lavender}` },
+    tap: { scale: 0.95, boxShadow: `0 0 10px ${lavender}` },
   };
 
   return (
     <motion.div
-      className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-14 p-10 rounded-3xl shadow-xl"
-      style={{ background: "#0d0f14", border: `1px solid ${mainColor}` }}
+      className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 p-8 rounded-2xl shadow-xl"
+      style={{ background: "#0d0f14", border: `1.5px solid ${lavender}` }}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       {/* Input Editor */}
-      <motion.section
-        className="flex-1 flex flex-col rounded-3xl overflow-hidden"
-        variants={{
-          rest: { borderColor: mainColor, boxShadow: `inset 0 0 15px ${mainColor}` },
-          hover: { borderColor: "#b4b7c1", boxShadow: `inset 0 0 25px ${mainColor}`, transition: { duration: 0.4 } },
-        }}
-        initial="rest"
-        whileHover="hover"
-        style={{ borderWidth: 3, borderStyle: "solid" }}
-      >
-        <div className="flex-1 p-1">{inputEditor && <EditorContent editor={inputEditor} />}</div>
-        <div className="flex justify-between items-center bg-[#191b22] border-t border-[#444853] p-4 rounded-b-3xl">
-          <span className="text-gray-400 select-none">{inputWordCount} words</span>
+      <section className="flex flex-col flex-1 rounded-l-2xl shadow-inner overflow-hidden">
+        {inputEditor && <EditorContent editor={inputEditor} />}
+        <div className="flex justify-between items-center bg-[#191b22] p-4 rounded-bl-2xl text-gray-400 select-none">
+          <span>{inputWordCount} words</span>
+
           <motion.button
             onClick={handleProcess}
             disabled={isLoading}
@@ -212,33 +179,24 @@ export default function ModeEditor({
             initial="rest"
             whileHover="hover"
             whileTap="tap"
-            className="rounded-xl text-white font-semibold"
+            className="rounded-xl px-6 py-2 font-semibold text-black"
             style={{
-              padding: "12px 28px",
-              background: `linear-gradient(90deg, ${mainColor} 0%, #7f818a 100%)`,
-              boxShadow: `0 4px 12px ${mainColor}`,
+              background: lavender,
+              opacity: isLoading ? 0.6 : 1,
+              cursor: isLoading ? "not-allowed" : "pointer",
             }}
           >
             {isLoading ? "Processing..." : modeLabels[mode]}
           </motion.button>
         </div>
-        {error && <p className="mt-3 text-red-400 select-none">{error}</p>}
-      </motion.section>
+        {error && <p className="mt-2 text-red-600">{error}</p>}
+      </section>
 
       {/* Output Editor */}
-      <motion.section
-        className="flex-1 flex flex-col rounded-3xl overflow-hidden"
-        variants={{
-          rest: { borderColor: mainColor, boxShadow: `inset 0 0 18px ${mainColor}` },
-          hover: { borderColor: "#c4c7cf", boxShadow: `inset 0 0 28px ${mainColor}`, transition: { duration: 0.4 } },
-        }}
-        initial="rest"
-        whileHover="hover"
-        style={{ borderWidth: 3, borderStyle: "solid" }}
-      >
-        <div className="flex-1 p-1">{outputEditor && <EditorContent editor={outputEditor} />}</div>
-        <div className="flex justify-between items-center bg-[#15171d] border-t border-[#444853] p-4 rounded-b-3xl">
-          <span className="text-gray-400 select-none">{outputWordCount} words</span>
+      <section className="flex flex-col flex-1 rounded-r-2xl shadow-inner overflow-hidden">
+        {outputEditor && <EditorContent editor={outputEditor} />}
+        <div className="flex justify-between items-center bg-[#15171d] p-4 rounded-br-2xl text-gray-400 select-none">
+          <span>{outputWordCount} words</span>
           {outputContent && (
             <motion.button
               onClick={handleCopy}
@@ -246,20 +204,19 @@ export default function ModeEditor({
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              aria-label="Copy output content"
-              className="rounded-xl text-white font-semibold border"
+              aria-label="Copy output"
+              className="flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-black"
               style={{
-                borderColor: mainColor,
-                padding: "10px 22px",
-                color: mainColor,
-                boxShadow: `0 0 12px ${mainColor}`,
+                background: lavender,
+                boxShadow: `0 0 12px ${lavender}`,
               }}
             >
-              <ClipboardCopy size={18} /> Copy
+              <ClipboardCopy size={18} />
+              Copy
             </motion.button>
           )}
         </div>
-      </motion.section>
+      </section>
     </motion.div>
   );
 }

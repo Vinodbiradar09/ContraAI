@@ -46,9 +46,9 @@ export default function RefinePage() {
          transition={{ duration: 0.7, ease: "easeOut" }}
        >
          <motion.h1
-           className="text-4xl sm:text-5xl font-extrabold text-[#393E46] max-w-4xl text-center mb-10 select-none"
-           initial={{ opacity: 0, y: -10 }}
-           animate={{ opacity: 1, y: 0 }}
+           className="text-xl sm:text-2xl font-extrabold text-[#393E46] max-w-4xl text-center mb-1 select-none"
+           initial={{ opacity: 0, y: 0 }}
+           animate={{ opacity: 1, y: -12 }}
            transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
          >
            Refine Mode AI Text
