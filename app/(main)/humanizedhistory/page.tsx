@@ -5,11 +5,44 @@ import { ApiRes } from "@/app/types/ApiResponse";
 import HistoryCard from "@/components/HistoryCard";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence} from "framer-motion";
+
+import { easeIn, easeOut } from "framer-motion";
 
 type HistoryItem = {
   _idTransformedHumanizedContent: string;
   transformedHumanizedContent: string;
   transformedHumanizedWordCount: number;
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: easeOut, 
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.3,
+      ease: easeIn,  
+    },
+  },
 };
 
 const HumanizedHistory = () => {
@@ -34,14 +67,17 @@ const HumanizedHistory = () => {
         setIsSubmittingHis(true);
         setErrorHis("");
         const response = await axios.get<ApiRes>("/api/history/humanizedHis?mode=humanize");
+
         if (response.data.success && response.data.transformHumanizeHistory) {
-          setTransformedHistory(response.data?.transformHumanizeHistory);
+          setTransformedHistory(response.data.transformHumanizeHistory);
         } else {
           setErrorHis(response.data.message || "No Humanized History found");
         }
       } catch (error) {
         const err = error as AxiosError<ApiRes>;
-        setErrorHis(err.response?.data.message || "Internal server Error can't access the Humanized history");
+        setErrorHis(
+          err.response?.data.message || "Internal server Error can't access the Humanized history"
+        );
       } finally {
         setIsSubmittingHis(false);
       }
@@ -108,19 +144,34 @@ const HumanizedHistory = () => {
         <p className="text-center text-gray-400">You have zero history.</p>
       )}
 
-      {/* Grid with 2 cards per row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-6xl mx-auto">
-        {!isSubmittingHis &&
-          transformedHistory.map((item) => (
-            <HistoryCard
-              key={item._idTransformedHumanizedContent}
-              content={item.transformedHumanizedContent}
-              onCopy={() => handleCopy(item.transformedHumanizedContent)}
-              onDelete={() => handleDelete(item._idTransformedHumanizedContent)}
-              wordCount={item.transformedHumanizedWordCount}
-            />
-          ))}
-      </div>
+      {/* Animated Grid */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-6xl mx-auto"
+      >
+        <AnimatePresence>
+          {!isSubmittingHis &&
+            transformedHistory.map((item) => (
+              <motion.div
+                key={item._idTransformedHumanizedContent}
+                variants={cardVariants}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+                layout
+              >
+                <HistoryCard
+                  content={item.transformedHumanizedContent}
+                  onCopy={() => handleCopy(item.transformedHumanizedContent)}
+                  onDelete={() => handleDelete(item._idTransformedHumanizedContent)}
+                  wordCount={item.transformedHumanizedWordCount}
+                />
+              </motion.div>
+            ))}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };
