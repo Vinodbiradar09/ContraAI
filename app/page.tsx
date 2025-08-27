@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export default function HomePage() {
   return (
     <main className="relative min-h-screen bg-black text-white flex flex-col justify-center items-center px-6 py-16 overflow-hidden">
-      {/* Diagonal silver beam sweeping across */}
+   
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -23,14 +23,14 @@ export default function HomePage() {
         />
       </motion.div>
 
-      {/* Content */}
+    
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
         className="relative max-w-4xl text-center z-10"
       >
-        {/* Title with light shimmer */}
+      
         <div className="inline-block relative overflow-hidden">
           <motion.h1
             className="relative text-5xl sm:text-7xl font-extrabold tracking-tight mb-3 select-none"
@@ -47,7 +47,7 @@ export default function HomePage() {
             Contra AI
           </motion.h1>
 
-          {/* Constant shimmering strip on text */}
+        
           <motion.div
             className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent"
             animate={{ x: ["-100%", "100%", "-100%"] }}
@@ -58,7 +58,7 @@ export default function HomePage() {
             }}
           />
 
-          {/* Underline reacts like pulse when beam passes */}
+       
           <motion.div
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{
@@ -75,7 +75,7 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Subtitle */}
+      
         <motion.p
           className="text-gray-400 text-lg sm:text-xl max-w-xl mx-auto mb-12 leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
@@ -86,7 +86,7 @@ export default function HomePage() {
           delivering elegance, clarity, and precision.
         </motion.p>
 
-        {/* Buttons with metallic hover */}
+      
         <motion.div
           className="flex flex-col sm:flex-row justify-center gap-6"
           initial={{ opacity: 0 }}
@@ -121,7 +121,7 @@ export default function HomePage() {
           </Link>
         </motion.div>
 
-        {/* Footer Note */}
+      
         <motion.div
           className="hidden lg:flex justify-center mt-12 text-sm text-gray-600 select-none tracking-wide"
           initial={{ opacity: 0 }}
@@ -132,8 +132,8 @@ export default function HomePage() {
         </motion.div>
       </motion.div>
 
-      {/* Subtle viewport suggestion */}
-      <p className="absolute bottom-2 right-4 text-xs text-gray-700/20 select-none">
+    
+      <p className="absolute bottom-2 right-4 text-xs text-gray-100/20 select-none">
         Best viewed on desktop or laptop
       </p>
     </main>
