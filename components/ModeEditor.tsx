@@ -153,7 +153,7 @@ export default function ModeEditor({
       } else {
         setOutputContent(response.data.content || "");
       }
-    } catch {
+    } catch (error) {
       setError("An unexpected error occurred.");
     } finally {
       setIsLoading(false);

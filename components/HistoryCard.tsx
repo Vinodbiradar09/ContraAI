@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import {
   Card,
@@ -35,9 +34,9 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   const handleHoverStart = () => {
     setIsHover(true);
     controls.start({
-      scale: 1.04,
-      boxShadow: "0 0 20px 6px rgba(204, 21, 202, 0.8)",
-      borderColor: "rgba(204, 21, 202, 1)",
+      scale: 1.02,
+      borderColor: "rgba(147, 51, 234, 1)", // Purple border on hover
+      boxShadow: "0 0 15px 3px rgba(168, 85, 247, 0.6)",
       transition: { duration: 0.3, ease: "easeInOut" },
     });
   };
@@ -46,8 +45,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     setIsHover(false);
     controls.start({
       scale: 1,
-      boxShadow: "0 0 0 rgba(204, 21, 202, 0)",
-      borderColor: "rgba(204, 21, 202, 0.5)",
+      borderColor: "rgba(147, 51, 234, 0.5)",
+      boxShadow: "0 0 0 rgba(0,0,0,0)",
       transition: { duration: 0.3, ease: "easeInOut" },
     });
   };
@@ -57,40 +56,40 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       animate={controls}
       initial={{
         scale: 1,
-        boxShadow: "0 0 0 rgba(204, 21, 202, 0)",
-        borderColor: "rgba(204, 21, 202, 0.5)",
+        borderColor: "rgba(147, 51, 234, 0.5)",
+        boxShadow: "0 0 0 rgba(0,0,0,0)",
       }}
       onHoverStart={handleHoverStart}
       onHoverEnd={handleHoverEnd}
       style={{ borderWidth: 2, borderStyle: "solid" }}
-      className="mb-6 rounded-2xl max-h-[350px] flex flex-col border bg-black"
+      className="rounded-xl flex flex-col border bg-neutral-950"
     >
-      <Card className="flex flex-col bg-black shadow-none rounded-none border-none p-0 flex-1 overflow-hidden">
+      <Card className="flex flex-col bg-neutral-950 border-0 shadow-none rounded-xl flex-1 overflow-hidden">
         <CardHeader className="pb-2">
-          <CardTitle
-            className="text-white text-base md:text-lg font-medium leading-relaxed whitespace-pre-wrap break-words max-h-[200px] overflow-y-auto"
-            style={{ scrollbarWidth: "thin" }}
-          >
+          <CardTitle className="text-white text-base md:text-lg font-medium leading-relaxed whitespace-pre-wrap break-words max-h-[180px] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700">
             {content}
           </CardTitle>
           {description && (
-            <CardDescription className="text-gray-400 truncate">{description}</CardDescription>
+            <CardDescription className="text-gray-400 truncate">
+              {description}
+            </CardDescription>
           )}
         </CardHeader>
-        <CardContent className="pt-2 flex justify-between items-center mt-auto border-t border-gray-700 bg-black rounded-b-2xl px-4 py-3 select-none">
+
+        {/* Footer Section */}
+        <CardContent className="pt-2 flex justify-between items-center mt-auto border-t border-gray-800 bg-neutral-900 rounded-b-xl px-4 py-3 select-none">
           {typeof wordCount === "number" && (
-            <div className="text-white text-sm">
-              Words: <span className="font-semibold">{wordCount}</span>
+            <div className="text-gray-300 text-sm">
+              Words: <span className="font-semibold text-white">{wordCount}</span>
             </div>
           )}
           <CardAction className="flex gap-3">
             {onCopy && (
               <Button
-                variant="outline"
                 size="sm"
                 onClick={onCopy}
                 aria-label="Copy content"
-                className="flex items-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-pink-500 text-white shadow-lg hover:shadow-pink-700 border-transparent"
+                className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white border-0 shadow-md"
               >
                 <ClipboardCopy size={16} />
                 Copy
@@ -98,11 +97,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             )}
             {onDelete && (
               <Button
-                variant="outline"
                 size="sm"
                 onClick={onDelete}
                 aria-label="Delete content"
-                className="flex items-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-pink-500 text-white shadow-lg hover:shadow-pink-700 border-transparent"
+                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white border-0 shadow-md"
               >
                 <Trash2 size={16} />
                 Delete
