@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import axios, { AxiosError } from "axios";
 import { ApiRes } from "@/app/types/ApiResponse";
@@ -6,7 +7,6 @@ import HistoryCard from "@/components/HistoryCard";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence} from "framer-motion";
-
 import { easeIn, easeOut } from "framer-motion";
 
 type HistoryItem = {
@@ -19,9 +19,7 @@ const containerVariants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-    },
+    transition: { staggerChildren: 0.12 },
   },
 };
 
@@ -30,18 +28,12 @@ const cardVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.4,
-      ease: easeOut, 
-    },
+    transition: { duration: 0.4, ease: easeOut },
   },
   exit: {
     opacity: 0,
     y: -20,
-    transition: {
-      duration: 0.3,
-      ease: easeIn,  
-    },
+    transition: { duration: 0.3, ease: easeIn },
   },
 };
 
@@ -67,7 +59,6 @@ const HumanizedHistory = () => {
         setIsSubmittingHis(true);
         setErrorHis("");
         const response = await axios.get<ApiRes>("/api/history/humanizedHis?mode=humanize");
-
         if (response.data.success && response.data.transformHumanizeHistory) {
           setTransformedHistory(response.data.transformHumanizeHistory.reverse() || []);
         } else {
@@ -75,20 +66,15 @@ const HumanizedHistory = () => {
         }
       } catch (error) {
         const err = error as AxiosError<ApiRes>;
-        setErrorHis(
-          err.response?.data.message || "Internal server Error can't access the Humanized history"
-        );
+        setErrorHis(err.response?.data.message || "Internal server Error can't access history");
       } finally {
         setIsSubmittingHis(false);
       }
     };
-
     fetchHistory();
   }, [session?.user]);
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-  };
+  const handleCopy = (text: string) => navigator.clipboard.writeText(text);
 
   const handleDelete = async (id: string) => {
     try {
@@ -98,13 +84,11 @@ const HumanizedHistory = () => {
           hist.filter((item) => item._idTransformedHumanizedContent !== id)
         );
       } else {
-        setErrorDel(response.data.message || "Failed to delete the Humanized History");
+        setErrorDel(response.data.message || "Failed to delete history");
       }
     } catch (error) {
       const err = error as AxiosError<ApiRes>;
-      setErrorDel(
-        err.response?.data.message || "Internal Server Error While Deleting the Humanized History"
-      );
+      setErrorDel(err.response?.data.message || "Internal Server Error while deleting history");
     } finally {
       setErrorDel("");
     }
@@ -130,13 +114,28 @@ const HumanizedHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black px-4 py-8">
-      {/* Page Title */}
-      <h1 className="text-center text-3xl font-bold text-white mb-8 tracking-wide">
-        Humanized History
-      </h1>
+    <div className="min-h-screen bg-black px-4 py-12">
+      {/* Title */}
+      <div className="text-center mb-12">
+        <motion.h1
+          className="text-3xl sm:text-4xl font-extrabold bg-clip-text text-transparent 
+                     bg-gradient-to-r from-gray-200 via-white to-gray-400"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: -10 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          Humanized History
+        </motion.h1>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: [0, 1, 1.05, 1] }}
+          transition={{ duration: 1.8, ease: "easeInOut" }}
+          className="h-[2px] mt-3 rounded-full bg-gradient-to-r 
+                     from-gray-200 via-white to-gray-400 mx-auto w-1/3 origin-left"
+        />
+      </div>
 
-      {/* Status/Error Messages */}
+      {/* Status/Error */}
       {isSubmittingHis && <p className="text-center text-gray-400 mb-4">Loading history...</p>}
       {errorHis && <p className="text-center text-red-600 mb-4">{errorHis}</p>}
       {errorDel && <p className="text-center text-red-600 mb-4">{errorDel}</p>}
@@ -144,7 +143,7 @@ const HumanizedHistory = () => {
         <p className="text-center text-gray-400">You have zero history.</p>
       )}
 
-      {/* Animated Grid */}
+      {/* History Cards */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
