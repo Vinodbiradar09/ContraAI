@@ -33,14 +33,13 @@ export default function ModeEditor({
   const [error, setError] = React.useState("");
   const [inputWordCount, setInputWordCount] = React.useState(0);
   const [outputWordCount, setOutputWordCount] = React.useState(0);
+  const [copied, setCopied] = React.useState(false);
 
-  // Lavender theme colors
   const lavender = "#a177b9";
 
   const inputBg = "#14161b";
   const outputBg = "#0f1116";
 
-  // Fixed height style for consistent editor sizing
   const editorFixedHeightStyle = `
     min-height: 480px;
     max-height: 480px;
@@ -51,7 +50,7 @@ export default function ModeEditor({
     extensions: [StarterKit],
     content: "",
     editable: true,
-    immediatelyRender : false,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => setInputWordCount(countWords(editor.getText())),
     editorProps: {
       attributes: {
@@ -78,7 +77,7 @@ export default function ModeEditor({
     extensions: [StarterKit],
     content: "",
     editable: true,
-    immediatelyRender : false,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => setOutputWordCount(countWords(editor.getText())),
     editorProps: {
       attributes: {
@@ -141,7 +140,8 @@ export default function ModeEditor({
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(outputContent);
-      toast("Copied!", { description: `${modeLabels[mode]} content copied.` });
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error("Failed to copy to clipboard");
     }
@@ -212,7 +212,7 @@ export default function ModeEditor({
               }}
             >
               <ClipboardCopy size={18} />
-              Copy
+              {copied ? "Copied" : "Copy"}
             </motion.button>
           )}
         </div>
