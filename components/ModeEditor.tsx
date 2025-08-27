@@ -35,11 +35,9 @@ export default function ModeEditor({
   const [outputWordCount, setOutputWordCount] = React.useState(0);
   const [copied, setCopied] = React.useState(false);
 
-  const lavender = "#a177b9";
-
+  const silver = "#d1d5db"; // tailwind neutral-300 for metallic silver
   const inputBg = "#14161b";
   const outputBg = "#0f1116";
-
   const editorFixedHeightStyle = `
     min-height: 480px;
     max-height: 480px;
@@ -50,7 +48,7 @@ export default function ModeEditor({
     extensions: [StarterKit],
     content: "",
     editable: true,
-    immediatelyRender: false,
+    immediatelyRender : false,
     onUpdate: ({ editor }) => setInputWordCount(countWords(editor.getText())),
     editorProps: {
       attributes: {
@@ -58,12 +56,8 @@ export default function ModeEditor({
         style: `
           padding: 24px;
           background: ${inputBg};
-          color: #e1e2e5;
+          color: #e5e7eb;
           font-size: 1.1rem;
-          white-space: pre-wrap;
-          word-wrap: break-word;
-          outline: none;
-          box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4);
           border-radius: 18px 0 0 18px;
           ${editorFixedHeightStyle}
         `,
@@ -77,7 +71,7 @@ export default function ModeEditor({
     extensions: [StarterKit],
     content: "",
     editable: true,
-    immediatelyRender: false,
+    immediatelyRender : false,
     onUpdate: ({ editor }) => setOutputWordCount(countWords(editor.getText())),
     editorProps: {
       attributes: {
@@ -85,12 +79,8 @@ export default function ModeEditor({
         style: `
           padding: 24px;
           background: ${outputBg};
-          color: #d1d2d6;
+          color: #e5e7eb;
           font-size: 1.1rem;
-          white-space: pre-wrap;
-          word-wrap: break-word;
-          outline: none;
-          box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.5);
           border-radius: 0 18px 18px 0;
           ${editorFixedHeightStyle}
         `,
@@ -112,7 +102,6 @@ export default function ModeEditor({
     setOutputContent("");
     try {
       const text = inputEditor?.getText().trim() ?? "";
-
       if (text.length < 50) {
         setError("Please enter at least 50 characters.");
         setIsLoading(false);
@@ -123,13 +112,11 @@ export default function ModeEditor({
         setIsLoading(false);
         return;
       }
-
-      const response = await axios.post<ApiRes>(apiEndpoint, { originalContent: text });
-      if (!response.data.success) {
-        setError(response.data.message || "Failed to transform content.");
-      } else {
-        setOutputContent(response.data.content || "");
-      }
+      const response = await axios.post<ApiRes>(apiEndpoint, {
+        originalContent: text,
+      });
+      if (!response.data.success) setError(response.data.message || "Failed to transform content.");
+      else setOutputContent(response.data.content || "");
     } catch {
       setError("An unexpected error occurred.");
     } finally {
@@ -147,31 +134,28 @@ export default function ModeEditor({
     }
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-
   const buttonVariants = {
     rest: { scale: 1 },
-    hover: { scale: 1.1, boxShadow: `0 0 18px ${lavender}` },
-    tap: { scale: 0.95, boxShadow: `0 0 10px ${lavender}` },
+    hover: { scale: 1.07, boxShadow: `0 0 20px ${silver}` },
+    tap: { scale: 0.95, boxShadow: `0 0 12px ${silver}` },
   };
 
   return (
     <motion.div
-      className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 p-8 rounded-2xl shadow-xl"
-      style={{ background: "#0d0f14", border: `1.5px solid ${lavender}` }}
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 p-6 rounded-2xl"
+      style={{
+        background: "#0d0f14",
+        border: `1.5px solid ${silver}`,
+      }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
     >
-      {/* Input Editor */}
-      <section className="flex flex-col flex-1 rounded-l-2xl shadow-inner overflow-hidden">
+      {/* Input */}
+      <section className="flex flex-col flex-1 overflow-hidden">
         {inputEditor && <EditorContent editor={inputEditor} />}
-        <div className="flex justify-between items-center bg-[#191b22] p-4 rounded-bl-2xl text-gray-400 select-none">
+        <div className="flex justify-between items-center bg-[#1b1b1b] p-4 text-gray-400">
           <span>{inputWordCount} words</span>
-
           <motion.button
             onClick={handleProcess}
             disabled={isLoading}
@@ -180,22 +164,18 @@ export default function ModeEditor({
             whileHover="hover"
             whileTap="tap"
             className="rounded-xl px-6 py-2 font-semibold text-black"
-            style={{
-              background: lavender,
-              opacity: isLoading ? 0.6 : 1,
-              cursor: isLoading ? "not-allowed" : "pointer",
-            }}
+            style={{ background: silver, opacity: isLoading ? 0.6 : 1 }}
           >
             {isLoading ? "Processing..." : modeLabels[mode]}
           </motion.button>
         </div>
-        {error && <p className="mt-2 text-red-600">{error}</p>}
+        {error && <p className="mt-2 text-red-500">{error}</p>}
       </section>
 
-      {/* Output Editor */}
-      <section className="flex flex-col flex-1 rounded-r-2xl shadow-inner overflow-hidden">
+      {/* Output */}
+      <section className="flex flex-col flex-1 overflow-hidden">
         {outputEditor && <EditorContent editor={outputEditor} />}
-        <div className="flex justify-between items-center bg-[#15171d] p-4 rounded-br-2xl text-gray-400 select-none">
+        <div className="flex justify-between items-center bg-[#1b1b1b] p-4 text-gray-400">
           <span>{outputWordCount} words</span>
           {outputContent && (
             <motion.button
@@ -204,12 +184,8 @@ export default function ModeEditor({
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              aria-label="Copy output"
               className="flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-black"
-              style={{
-                background: lavender,
-                boxShadow: `0 0 12px ${lavender}`,
-              }}
+              style={{ background: silver, boxShadow: `0 0 14px ${silver}` }}
             >
               <ClipboardCopy size={18} />
               {copied ? "Copied" : "Copy"}
