@@ -35,7 +35,7 @@ export default function ModeEditor({
   const [outputWordCount, setOutputWordCount] = React.useState(0);
   const [copied, setCopied] = React.useState(false);
 
-  const silver = "#d1d5db"; // tailwind neutral-300 for metallic silver
+  const silver = "#d1d5db"; 
   const inputBg = "#14161b";
   const outputBg = "#0f1116";
   const editorFixedHeightStyle = `
@@ -151,7 +151,7 @@ export default function ModeEditor({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      {/* Input */}
+   
       <section className="flex flex-col flex-1 overflow-hidden">
         {inputEditor && <EditorContent editor={inputEditor} />}
         <div className="flex justify-between items-center bg-[#1b1b1b] p-4 text-gray-400">
@@ -172,7 +172,7 @@ export default function ModeEditor({
         {error && <p className="mt-2 text-red-500">{error}</p>}
       </section>
 
-      {/* Output */}
+    
       <section className="flex flex-col flex-1 overflow-hidden">
         {outputEditor && <EditorContent editor={outputEditor} />}
         <div className="flex justify-between items-center bg-[#1b1b1b] p-4 text-gray-400">

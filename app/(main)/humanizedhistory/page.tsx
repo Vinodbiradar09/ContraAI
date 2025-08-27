@@ -115,7 +115,7 @@ const HumanizedHistory = () => {
 
   return (
     <div className="min-h-screen bg-black px-4 py-12">
-      {/* Title */}
+    
       <div className="text-center mb-12">
         <motion.h1
           className="text-3xl sm:text-4xl font-extrabold bg-clip-text text-transparent 
@@ -135,7 +135,7 @@ const HumanizedHistory = () => {
         />
       </div>
 
-      {/* Status/Error */}
+     
       {isSubmittingHis && <p className="text-center text-gray-400 mb-4">Loading history...</p>}
       {errorHis && <p className="text-center text-red-600 mb-4">{errorHis}</p>}
       {errorDel && <p className="text-center text-red-600 mb-4">{errorDel}</p>}
@@ -143,7 +143,7 @@ const HumanizedHistory = () => {
         <p className="text-center text-gray-400">You have zero history.</p>
       )}
 
-      {/* History Cards */}
+   
       <motion.div
         variants={containerVariants}
         initial="hidden"

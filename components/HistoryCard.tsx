@@ -35,7 +35,9 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   const controls = useAnimation();
   const [copied, setCopied] = useState(false);
 
-  // Hover animations with silver glow
+  const silver = "#d1d5db";
+
+
   const handleHoverStart = () => {
     controls.start({
       scale: 1.03,
@@ -45,7 +47,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
         "0 0 6px rgba(209,213,219,0.3)",
       ],
       transition: { duration: 2, ease: "easeInOut", repeat: Infinity },
-      borderColor: "#d1d5db",
+      borderColor: silver,
     });
   };
 
@@ -87,7 +89,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           {description && <p className="text-gray-400 truncate">{description}</p>}
         </CardHeader>
 
-        {/* Footer */}
+      
         <CardContent className="pt-2 flex justify-between items-center mt-auto border-t border-gray-800 bg-neutral-900 rounded-b-xl px-4 py-3 select-none">
           {typeof wordCount === "number" && (
             <div className="text-gray-300 text-sm">
@@ -100,7 +102,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
                 <Button
                   size="sm"
                   onClick={handleCopyClick}
-                  className="flex items-center gap-2 bg-[#111] text-white border border-gray-600 hover:shadow-[0_0_10px_rgba(255,255,255,0.4)] transition"
+                  className="flex items-center gap-2 bg-[#111] text-white border border-gray-600 hover:shadow-[0_0_12px_rgba(255,255,255,0.5)] transition"
                 >
                   <ClipboardCopy size={16} />
                   {copied ? "Copied" : "Copy"}
@@ -114,7 +116,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Button
                       size="sm"
-                      className="flex items-center gap-2 bg-[#111] text-red-400 border border-red-700 hover:bg-red-700 hover:text-white transition"
+                      className="flex items-center gap-2 bg-[#111] text-white border border-gray-600 hover:shadow-[0_0_12px_rgba(255,255,255,0.5)] transition"
                     >
                       <Trash2 size={16} />
                       Delete

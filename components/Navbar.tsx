@@ -22,9 +22,9 @@ export default function Navbar() {
 
   return (
     <nav className="flex flex-wrap items-center justify-between bg-black/90 backdrop-blur-md px-4 py-3 border-b border-gray-800 sticky top-0 z-50">
-      {/* Left Section */}
+     
       <div className="flex items-center gap-4 flex-shrink-0">
-        {/* Home Button */}
+       
         <motion.button
           onClick={() => router.push("/dashboard")}
           aria-label="Home"
@@ -36,7 +36,7 @@ export default function Navbar() {
           <Home size={22} />
         </motion.button>
 
-        {/* Logo Text */}
+     
         <h1
           onClick={() => router.push("/dashboard")}
           className="text-xl sm:text-2xl font-extrabold select-none tracking-tight bg-clip-text text-transparent 
@@ -48,9 +48,9 @@ export default function Navbar() {
         </h1>
       </div>
 
-      {/* Right Section */}
+    
       <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mt-2 sm:mt-0">
-        {/* Modes Dropdown */}
+       
         <Menu as="div" className="relative inline-block text-left">
           <Menu.Button
             as={motion.button}
@@ -100,7 +100,7 @@ export default function Navbar() {
           </Transition>
         </Menu>
 
-        {/* Histories Dropdown */}
+      
         <Menu as="div" className="relative inline-block text-left">
           <Menu.Button
             as={motion.button}
@@ -150,7 +150,7 @@ export default function Navbar() {
           </Transition>
         </Menu>
 
-        {/* Logout */}
+     
         <motion.button
           onClick={handleLogout}
           aria-label="Logout"

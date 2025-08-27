@@ -49,7 +49,7 @@ export default function RefinePage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
     >
-      {/* Title */}
+    
       <div className="text-center mb-8">
         <motion.h1
           className="text-2xl sm:text-3xl font-extrabold bg-clip-text text-transparent 
@@ -61,7 +61,7 @@ export default function RefinePage() {
           Refine Mode AI
         </motion.h1>
 
-        {/* Silver underline */}
+     
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: [0, 1, 1.05, 1] }}
@@ -71,7 +71,7 @@ export default function RefinePage() {
         />
       </div>
 
-      {/* Mode Editor */}
+    
       <div className="w-full max-w-7xl">
         <ModeEditor
           mode="refine"

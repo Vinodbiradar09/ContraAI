@@ -56,7 +56,7 @@ const VerifyAccount = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-black px-4">
-      {/* Sweeping Silver Spotlight Background */}
+    
       <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
           className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-tr from-transparent via-white/10 to-transparent"
@@ -70,7 +70,7 @@ const VerifyAccount = () => {
         />
       </motion.div>
 
-      {/* Content Container */}
+    
       <motion.div
         initial={{ opacity: 0, y: 40, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -79,7 +79,7 @@ const VerifyAccount = () => {
                    bg-black bg-opacity-80 border border-gray-700
                    shadow-[0_0_30px_5px_rgba(255,255,255,0.1)] backdrop-blur-xl"
       >
-        {/* Title with shimmer underline */}
+    
         <div className="text-center mb-10">
           <motion.h1
             initial={{ y: -20, opacity: 0 }}
@@ -104,7 +104,7 @@ const VerifyAccount = () => {
           />
         </div>
 
-        {/* Form */}
+      
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField

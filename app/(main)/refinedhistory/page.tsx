@@ -42,6 +42,7 @@ const RefinedHistory = () => {
           transformRefineHistory?: RefineItem[];
           message?: string;
         }>("/api/history/refinedHis?mode=refine");
+
         if (response.data.success && response.data.transformRefineHistory) {
           setRefinedContentHistoryDetails(response.data.transformRefineHistory.reverse() || []);
         } else {
@@ -49,14 +50,11 @@ const RefinedHistory = () => {
         }
       } catch (error) {
         const err = error as AxiosError<{ message?: string }>;
-        setErrorHis(
-          err.response?.data.message || "Internal server error while accessing the refine history"
-        );
+        setErrorHis(err.response?.data.message || "Internal server error while accessing the refine history");
       } finally {
         setIsSubmittingHis(false);
       }
     };
-
     fetchHistory();
   }, [session?.user]);
 
@@ -89,7 +87,7 @@ const RefinedHistory = () => {
           },
         });
       } else {
-        setErrorDel(response.data.message || "Internal server error, failed to delete refined history");
+        setErrorDel(response.data.message || "Failed to delete refined history");
       }
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
@@ -119,9 +117,30 @@ const RefinedHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black px-4 py-8">
-      <h1 className="text-center text-3xl font-bold text-white mb-8 tracking-wide">Refined History</h1>
+    <div className="min-h-screen bg-black px-4 py-12">
+    
+      <div className="text-center mb-12">
+        <motion.h1
+          className="text-3xl sm:text-4xl font-extrabold bg-clip-text text-transparent 
+                     bg-gradient-to-r from-gray-200 via-white to-gray-400"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: -10 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          Refined History
+        </motion.h1>
 
+      
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: [0, 1, 1.05, 1] }}
+          transition={{ duration: 1.8, ease: "easeInOut" }}
+          className="h-[2px] mt-3 rounded-full bg-gradient-to-r 
+                     from-gray-200 via-white to-gray-400 mx-auto w-1/3 origin-left"
+        />
+      </div>
+
+    
       {isSubmittingHis && <p className="text-center text-gray-400 mb-4">Loading history...</p>}
       {errorHis && <p className="text-center text-red-600 mb-4">{errorHis}</p>}
       {errorDel && <p className="text-center text-red-600 mb-4">{errorDel}</p>}
@@ -129,6 +148,7 @@ const RefinedHistory = () => {
         <p className="text-center text-gray-400">You have zero history.</p>
       )}
 
+    
       <motion.div
         variants={containerVariants}
         initial="hidden"

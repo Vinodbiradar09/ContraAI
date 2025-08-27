@@ -94,7 +94,7 @@ export default function DashboardPage() {
 
   return (
     <main className="relative min-h-screen bg-black flex flex-col items-center py-12 px-4 sm:px-8 lg:px-16 overflow-hidden">
-      {/* sweeping silver spotlight background */}
+    
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -111,7 +111,7 @@ export default function DashboardPage() {
         />
       </motion.div>
 
-      {/* Title */}
+    
       <div className="relative z-10 text-center mb-14">
         <motion.h1
           initial={{ y: -20, opacity: 0 }}
@@ -136,7 +136,7 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Cards Grid */}
+   
       <div className="relative z-10 grid w-full max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 sm:gap-14">
         {dashboardModes.map(({ key, title, description, route, colors }) => (
           <motion.div

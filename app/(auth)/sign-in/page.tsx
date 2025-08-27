@@ -65,7 +65,6 @@ const SignInForm = () => {
     return (
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black px-4">
         
-        {/* Diagonal silver beam sweep in background */}
         <motion.div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -82,7 +81,6 @@ const SignInForm = () => {
           />
         </motion.div>
 
-        {/* Form Container */}
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -91,7 +89,7 @@ const SignInForm = () => {
                      bg-black bg-opacity-80 border border-gray-700
                      shadow-[0_0_30px_5px_rgba(255,255,255,0.08)] backdrop-blur-xl"
         >
-          {/* Title with shimmer underline */}
+    
           <div className="relative inline-block w-full text-center mb-10">
             <motion.h1
               initial={{ y: -10, opacity: 0 }}
@@ -104,7 +102,7 @@ const SignInForm = () => {
               Welcome Back to ContraAI
             </motion.h1>
 
-            {/* Underline Animation */}
+         
             <motion.div
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{
@@ -121,11 +119,11 @@ const SignInForm = () => {
             />
           </div>
 
-          {/* Form */}
+       
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               
-              {/* Email Field */}
+           
               <FormField
                 name='email'
                 control={form.control}
@@ -147,7 +145,7 @@ const SignInForm = () => {
                 )}
               />
 
-              {/* Password Field */}
+           
               <FormField
                 name='password'
                 control={form.control}
@@ -179,7 +177,7 @@ const SignInForm = () => {
                 )}
               />
 
-              {/* Submit Button */}
+           
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button
                   type='submit'
@@ -196,7 +194,7 @@ const SignInForm = () => {
             </form>
           </Form>
 
-          {/* Footer link */}
+        
           <p className="mt-8 text-center text-gray-400">
             Don’t have an account?{" "}
             <Link href="/sign-up" className="text-gray-300 hover:text-white underline">

@@ -86,7 +86,7 @@ export default function SignUpPage() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black px-4">
       
-      {/* Background sweeping silver beam */}
+    
       <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
           className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-tr from-transparent via-white/10 to-transparent"
@@ -100,7 +100,7 @@ export default function SignUpPage() {
         />
       </motion.div>
 
-      {/* Container */}
+    
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -109,7 +109,7 @@ export default function SignUpPage() {
                    bg-black bg-opacity-80 border border-gray-700 
                    shadow-[0_0_30px_5px_rgba(255,255,255,0.1)] backdrop-blur-xl"
       >
-        {/* Title with shimmer underline */}
+     
         <div className="relative text-center mb-10">
           <motion.h1
             initial={{ y: -10, opacity: 0 }}
@@ -136,9 +136,9 @@ export default function SignUpPage() {
           />
         </div>
 
-        {/* Form */}
+     
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Username */}
+        
           <div>
             <label htmlFor="username" className="block mb-1 text-gray-300 font-semibold">
               Username
@@ -166,7 +166,7 @@ export default function SignUpPage() {
             {errors.username && <p className="mt-1 text-xs text-red-600">{errors.username.message}</p>}
           </div>
 
-          {/* Email */}
+    
           <div>
             <label htmlFor="email" className="block mb-1 text-gray-300 font-semibold">
               Email
@@ -184,7 +184,7 @@ export default function SignUpPage() {
             {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>}
           </div>
 
-          {/* Password */}
+        
           <div className="relative">
             <label htmlFor="password" className="block mb-1 text-gray-300 font-semibold">
               Password
@@ -210,7 +210,7 @@ export default function SignUpPage() {
             {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>}
           </div>
 
-          {/* Submit button */}
+      
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <button
               type="submit"
@@ -225,7 +225,7 @@ export default function SignUpPage() {
           </motion.div>
         </form>
 
-        {/* Footer */}
+     
         <p className="mt-10 text-center text-gray-400">
           Already have an account?{" "}
           <Link href="/sign-in" className="text-gray-300 hover:text-white underline">
