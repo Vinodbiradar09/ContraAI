@@ -68,19 +68,13 @@ export default function SignUpPage() {
       if (res.data.success) {
         toast(res.data.message, {
           description: "Please verify your account by email.",
-          action: {
-            label: "Got it",
-            onClick: () => console.log("Acknowledged"),
-          },
+          action: { label: "Got it", onClick: () => console.log("Acknowledged") },
         });
         router.push(`/verify/${data.username}`);
       } else {
-        toast(res.data.message || "Registration failed." , {
-            description : "Your Registration Has Been Failed Due To Server Error",
-            action : {
-                label : "Got it",
-                onClick : ()=> console.log("Acknowledged"),
-            }
+        toast(res.data.message || "Registration failed.", {
+          description: "Your Registration Has Been Failed Due To Server Error",
+          action: { label: "Got it", onClick: () => console.log("Acknowledged") },
         });
       }
     } catch (error) {
@@ -90,32 +84,61 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
-   
-      <motion.div
-        initial={{ clipPath: "circle(0% at 50% 50%)" }}
-        animate={{ clipPath: "circle(150% at 50% 50%)" }}
-        transition={{
-          duration: 20,
-          ease: "linear",
-          repeat: Infinity,
-          repeatType: "loop",
-        }}
-        className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_center,_#ff00cc,_#333,rgba(255,255,255,0))] animate-rainbow"
-      />
+    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black px-4">
+      
+      {/* Background sweeping silver beam */}
+      <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-tr from-transparent via-white/10 to-transparent"
+          animate={{ x: ["-50%", "30%", "120%"] }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+        />
+      </motion.div>
 
+      {/* Container */}
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-md p-10 rounded-3xl bg-black bg-opacity-80 border border-purple-600 shadow-[0_0_20px_6px_rgba(204,21,202,0.8)] backdrop-blur-md"
+        className="relative z-10 w-full max-w-md p-10 rounded-3xl 
+                   bg-black bg-opacity-80 border border-gray-700 
+                   shadow-[0_0_30px_5px_rgba(255,255,255,0.1)] backdrop-blur-xl"
       >
-        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-700 mb-10 text-center">
-          Create your <span className="text-purple-400">ContraAI</span> Account
-        </h1>
+        {/* Title with shimmer underline */}
+        <div className="relative text-center mb-10">
+          <motion.h1
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7 }}
+            className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text
+                       bg-gradient-to-r from-gray-200 via-white to-gray-400"
+          >
+            Create your ContraAI Account
+          </motion.h1>
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{
+              scaleX: [0, 1.05, 1],
+              opacity: [0, 1, 1],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatDelay: 6,
+              ease: "easeInOut",
+            }}
+            className="h-[2px] mt-2 rounded-full bg-gradient-to-r from-gray-200 via-white to-gray-400 mx-auto w-1/2 origin-left"
+          />
+        </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-       
+          {/* Username */}
           <div>
             <label htmlFor="username" className="block mb-1 text-gray-300 font-semibold">
               Username
@@ -128,11 +151,11 @@ export default function SignUpPage() {
               autoComplete="off"
               className={`w-full rounded-md bg-black text-white placeholder-gray-500 p-3 border transition ${
                 errors.username ? "border-red-600" : "border-gray-700"
-              } focus:outline-none focus:ring-2 focus:ring-purple-600`}
+              } focus:outline-none focus:ring-2 focus:ring-gray-400`}
             />
             <p className="mt-1 text-sm text-center min-h-[1rem]">
               {isCheckingUsername
-                ? <span className="text-purple-400 animate-pulse">Checking availability...</span>
+                ? <span className="text-gray-300 animate-pulse">Checking availability...</span>
                 : (usernameMessage ? (
                     <span className={usernameMessage.toLowerCase().includes("available") ? "text-green-500" : "text-red-500"}>
                       {usernameMessage}
@@ -140,12 +163,10 @@ export default function SignUpPage() {
                   ) : <span className="invisible">&nbsp;</span>)
               }
             </p>
-            {errors.username && (
-              <p className="mt-1 text-xs text-red-600">{errors.username.message}</p>
-            )}
+            {errors.username && <p className="mt-1 text-xs text-red-600">{errors.username.message}</p>}
           </div>
 
-        
+          {/* Email */}
           <div>
             <label htmlFor="email" className="block mb-1 text-gray-300 font-semibold">
               Email
@@ -158,14 +179,12 @@ export default function SignUpPage() {
               autoComplete="off"
               className={`w-full rounded-md bg-black text-white placeholder-gray-500 p-3 border transition ${
                 errors.email ? "border-red-600" : "border-gray-700"
-              } focus:outline-none focus:ring-2 focus:ring-purple-600`}
+              } focus:outline-none focus:ring-2 focus:ring-gray-400`}
             />
-            {errors.email && (
-              <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>}
           </div>
 
-        
+          {/* Password */}
           <div className="relative">
             <label htmlFor="password" className="block mb-1 text-gray-300 font-semibold">
               Password
@@ -178,53 +197,41 @@ export default function SignUpPage() {
               autoComplete="off"
               className={`w-full rounded-md bg-black text-white placeholder-gray-500 p-3 border transition ${
                 errors.password ? "border-red-600" : "border-gray-700"
-              } focus:outline-none focus:ring-2 focus:ring-purple-600`}
+              } focus:outline-none focus:ring-2 focus:ring-gray-400`}
             />
             <button
               type="button"
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="absolute top-11 right-3 text-purple-400 hover:text-purple-200 cursor-pointer transition"
+              className="absolute top-11 right-3 text-gray-400 hover:text-gray-200 transition"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
             </button>
-            {errors.password && (
-              <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>}
           </div>
 
-        
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-3 rounded-md bg-gradient-to-r from-purple-600 via-pink-600 to-pink-500 text-white text-lg font-semibold shadow-lg hover:shadow-pink-700 transition disabled:opacity-50"
-          >
-            {isSubmitting ? "Creating account..." : "Create account"}
-          </button>
+          {/* Submit button */}
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-3 rounded-md bg-[#111111] border border-gray-700
+                         text-white text-lg font-semibold shadow-md 
+                         hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] 
+                         transition disabled:opacity-50"
+            >
+              {isSubmitting ? "Creating account..." : "Create account"}
+            </button>
+          </motion.div>
         </form>
 
-     
+        {/* Footer */}
         <p className="mt-10 text-center text-gray-400">
           Already have an account?{" "}
-          <Link href="/sign-in" className="text-pink-500 hover:underline">
+          <Link href="/sign-in" className="text-gray-300 hover:text-white underline">
             Sign In
           </Link>
         </p>
-
-      <style jsx global>{`
-        @keyframes rainbow {
-          0% {
-            filter: hue-rotate(0deg);
-          }
-          100% {
-            filter: hue-rotate(360deg);
-          }
-        }
-        .bg-[radial-gradient] {
-          background: radial-gradient(circle at center, #ff00cc, #333, transparent);
-          animation: rainbow 20s linear infinite;
-        }
-      `}</style>
       </motion.div>
     </div>
   );

@@ -1,104 +1,141 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { motion } from "framer-motion";
+
+export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <main className="relative min-h-screen bg-black text-white flex flex-col justify-center items-center px-6 py-16 overflow-hidden">
+      {/* Diagonal silver beam sweeping across */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <motion.div
+          className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-tr from-transparent via-white/10 to-transparent"
+          animate={{ x: ["-50%", "30%", "120%"] }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+      </motion.div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Content */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="relative max-w-4xl text-center z-10"
+      >
+        {/* Title with light shimmer */}
+        <div className="inline-block relative overflow-hidden">
+          <motion.h1
+            className="relative text-5xl sm:text-7xl font-extrabold tracking-tight mb-3 select-none"
+            style={{
+              background:
+                "linear-gradient(to right, #d4d4d4, #f5f5f5, #a3a3a3, #e5e5e5)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Contra AI
+          </motion.h1>
+
+          {/* Constant shimmering strip on text */}
+          <motion.div
+            className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent"
+            animate={{ x: ["-100%", "100%", "-100%"] }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+
+          {/* Underline reacts like pulse when beam passes */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{
+              scaleX: [0, 1.1, 1],
+              opacity: [0, 1, 1],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatDelay: 6,
+              ease: "easeInOut",
+            }}
+            className="relative h-[3px] mt-1 rounded-full bg-gradient-to-r from-gray-300 via-white to-gray-400 mx-auto origin-left"
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* Subtitle */}
+        <motion.p
+          className="text-gray-400 text-lg sm:text-xl max-w-xl mx-auto mb-12 leading-relaxed"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          Transform your content effortlessly with advanced AI-powered tools —
+          delivering elegance, clarity, and precision.
+        </motion.p>
+
+        {/* Buttons with metallic hover */}
+        <motion.div
+          className="flex flex-col sm:flex-row justify-center gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.8 }}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <Link href="/sign-up" passHref legacyBehavior>
+            <motion.a
+              whileHover={{
+                scale: 1.03,
+                background:
+                  "linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))",
+              }}
+              whileTap={{ scale: 0.97 }}
+              className="px-8 py-4 rounded-xl font-semibold text-white bg-[#111111] border border-gray-700 transition-colors duration-300"
+            >
+              Get Started
+            </motion.a>
+          </Link>
+          <Link href="/sign-in" passHref legacyBehavior>
+            <motion.a
+              whileHover={{
+                scale: 1.03,
+                background:
+                  "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0))",
+              }}
+              whileTap={{ scale: 0.97 }}
+              className="px-8 py-4 rounded-xl font-semibold text-gray-400 bg-[#0a0a0a] border border-gray-800 transition-colors duration-300"
+            >
+              Sign In
+            </motion.a>
+          </Link>
+        </motion.div>
+
+        {/* Footer Note */}
+        <motion.div
+          className="hidden lg:flex justify-center mt-12 text-sm text-gray-600 select-none tracking-wide"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3 }}
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          Powered by 4 intelligent AI modes: Humanize, Refine, Concise, Academics
+        </motion.div>
+      </motion.div>
+
+      {/* Subtle viewport suggestion */}
+      <p className="absolute bottom-2 right-4 text-xs text-gray-700/20 select-none">
+        Best viewed on desktop or laptop
+      </p>
+    </main>
   );
 }
-
