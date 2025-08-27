@@ -1,5 +1,5 @@
 import { NextRequest , NextResponse } from "next/server";
-import User from "@/app/model/Users";
+import User, { UserInt } from "@/app/model/Users";
 import { connectDB } from "@/app/lib/db";
 import { sendVerificationEmail } from "@/app/helpers/sendVerification";
 import { usernameValidation , signUpValidation } from "@/app/schemas/User.Schema";
@@ -7,7 +7,7 @@ import { UserT } from "@/app/types/Sign-up.type";
 import { sanitizeUser } from "@/app/helpers/sanitizedUser";
 
 export async function POST(request : NextRequest) : Promise<NextResponse> {
-    let user;
+    let  user;
     try {
         await connectDB();
         const body : UserT = await request.json();
@@ -56,6 +56,7 @@ export async function POST(request : NextRequest) : Promise<NextResponse> {
         const existingUserWithEmail = await User.findOne({email});
         if(existingUserWithEmail){
             if(existingUserWithEmail.isVerified){
+                user = await User.findOne({email});
                 return NextResponse.json(
                     {
                         success : false,
@@ -63,6 +64,7 @@ export async function POST(request : NextRequest) : Promise<NextResponse> {
                     }, {status : 400}
                 )
             } else {
+                user = await User.findOne({email});
                 existingUserWithEmail.verifyCode = verifyCode;
                 existingUserWithEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
                 await existingUserWithEmail.save();
@@ -87,6 +89,7 @@ export async function POST(request : NextRequest) : Promise<NextResponse> {
 
             user = newUser;
         }
+
         const emailResponse = await sendVerificationEmail(email , username , verifyCode);
         if(!emailResponse.success){
             return NextResponse.json(
@@ -97,6 +100,7 @@ export async function POST(request : NextRequest) : Promise<NextResponse> {
             )
         }
         if(!user){
+            console.log("user" , user);
             return NextResponse.json(
                 {
                     success: false,

@@ -6,14 +6,15 @@ export const sendVerificationEmail = async (email : string , username : string ,
     try {
         
         const {data , error} = await resend.emails.send({
-         from: 'Acme <onboarding@resend.dev>',
+         from: 'vinod <vinod@skmayya.me>',
          to : email,
          subject : "CONTRA-AI | VERIFICATION-CODE",
          react : VerificationEmail({username , otp})
         });
 
         if(error){
-            console.error("failed to send the verification code to email" , error.message);
+            console.log("ee" , email);
+            console.error("failed to send the verification code to email" , error);
             return {message : "Failed to send verification code to your email address" , success : false}
         }
         console.log("email queued successfully" , data);
