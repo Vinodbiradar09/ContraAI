@@ -60,13 +60,6 @@ const RefinedHistory = () => {
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast("Copied history", {
-      description: "Your Refined History has been copied",
-      action: {
-        label: "Undo",
-        onClick: () => console.log("Undo done"),
-      },
-    });
   };
 
   const handleDelete = async (id: string) => {

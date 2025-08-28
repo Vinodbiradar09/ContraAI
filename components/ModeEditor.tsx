@@ -3,6 +3,8 @@
 import React from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import {TextStyle} from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
 import axios from "axios";
 import { ClipboardCopy } from "lucide-react";
 import { countWords } from "@/app/helpers/wordsCount";
@@ -18,6 +20,42 @@ const modeLabels: Record<ModeType, string> = {
   concise: "Concise AI",
   academics: "Academics AI",
 };
+
+function diffWords(oldStr: string, newStr: string) {
+  const oldWords = oldStr.split(/\s+/);
+  const newWords = newStr.split(/\s+/);
+
+  const result: Array<{ value: string; added?: boolean }> = [];
+  let i = 0, j = 0;
+  while (i < oldWords.length || j < newWords.length) {
+    if (oldWords[i] === newWords[j]) {
+      result.push({ value: newWords[j] || "" });
+      i++;
+      j++;
+    } else if (newWords[j] && !oldWords.includes(newWords[j])) {
+      result.push({ value: newWords[j], added: true });
+      j++;
+    } else if (oldWords[i] && !newWords.includes(oldWords[i])) {
+      i++;
+    } else {
+      result.push({ value: newWords[j] || "", added: true });
+      i++;
+      j++;
+    }
+  }
+  return result;
+}
+
+function getHighlightedHTML(orig: string, transformed: string) {
+  const diffed = diffWords(orig, transformed);
+  return diffed
+    .map((part) =>
+      part.added
+        ? `<span style="color: #22c55e; font-weight: 600">${part.value}</span>`
+        : part.value
+    )
+    .join(" ");
+}
 
 export default function ModeEditor({
   mode,
@@ -35,7 +73,7 @@ export default function ModeEditor({
   const [outputWordCount, setOutputWordCount] = React.useState(0);
   const [copied, setCopied] = React.useState(false);
 
-  const silver = "#d1d5db"; 
+  const silver = "#d1d5db";
   const inputBg = "#14161b";
   const outputBg = "#0f1116";
   const editorFixedHeightStyle = `
@@ -45,10 +83,10 @@ export default function ModeEditor({
   `;
 
   const inputEditor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, TextStyle, Color],
     content: "",
     editable: true,
-    immediatelyRender : false,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => setInputWordCount(countWords(editor.getText())),
     editorProps: {
       attributes: {
@@ -67,11 +105,12 @@ export default function ModeEditor({
     },
   });
 
+
   const outputEditor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, TextStyle, Color],
     content: "",
     editable: true,
-    immediatelyRender : false,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => setOutputWordCount(countWords(editor.getText())),
     editorProps: {
       attributes: {
@@ -89,12 +128,15 @@ export default function ModeEditor({
     },
   });
 
+
   React.useEffect(() => {
-    if (outputEditor && outputContent !== outputEditor.getHTML()) {
-      outputEditor.commands.setContent(outputContent);
+    if (outputEditor && outputContent) {
+      const original = inputEditor?.getText() || "";
+      const highlighted = getHighlightedHTML(original, outputContent);
+      outputEditor.commands.setContent(highlighted);
       setOutputWordCount(countWords(outputContent));
     }
-  }, [outputContent, outputEditor]);
+  }, [outputContent, outputEditor, inputEditor]);
 
   async function handleProcess() {
     setError("");
@@ -151,7 +193,7 @@ export default function ModeEditor({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-   
+    
       <section className="flex flex-col flex-1 overflow-hidden">
         {inputEditor && <EditorContent editor={inputEditor} />}
         <div className="flex justify-between items-center bg-[#1b1b1b] p-4 text-gray-400">
@@ -172,7 +214,7 @@ export default function ModeEditor({
         {error && <p className="mt-2 text-red-500">{error}</p>}
       </section>
 
-    
+     
       <section className="flex flex-col flex-1 overflow-hidden">
         {outputEditor && <EditorContent editor={outputEditor} />}
         <div className="flex justify-between items-center bg-[#1b1b1b] p-4 text-gray-400">
